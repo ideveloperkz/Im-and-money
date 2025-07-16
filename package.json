@@ -1,0 +1,15 @@
+{
+  "name": "ya-i-dengi",
+  "version": "1.0.0",
+  "description": "Веб-приложение Я и Деньги",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
