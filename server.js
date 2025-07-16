@@ -2,17 +2,16 @@ const express = require('express');
 const path = require('path');
 const app = express();
 
-// Указываем Express, что public — папка с фронтендом
-const publicPath = path.join(__dirname, 'public');
-app.use(express.static(publicPath));
+// Статические файлы — всё из папки public
+app.use(express.static(path.join(__dirname, 'public')));
 
-// Если запрос не найден — отдаем index.html (SPA)
+// Все маршруты отдаем на index.html (если SPA)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(publicPath, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Запускаем сервер
+// Запуск сервера
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`🌐 Server running at http://localhost:${PORT}`);
 });
