@@ -3,7 +3,6 @@ let lastScrollY = window.scrollY;
 const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobileMenu');
 const hamburger = document.getElementById('hamburger');
-const authBtn = document.querySelector('.auth-btn'); // Находим кнопку авторизации
 
 window.addEventListener('scroll', () => {
     if (window.scrollY > lastScrollY && window.scrollY > 100) {
@@ -32,11 +31,6 @@ document.addEventListener('click', (e) => {
     if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
         closeMobileMenu();
     }
-});
-
-// Redirect to registration page
-authBtn.addEventListener('click', () => {
-    window.location.href = '../pages/registration.html';
 });
 
 // Game start function
