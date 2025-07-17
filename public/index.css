@@ -118,6 +118,8 @@ body::before {
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    text-decoration: none; /* Убираем подчеркивание ссылки */
+    display: inline-block; /* Делаем <a> блочно-инлайн, чтобы стили отображались как у кнопки */
 }
 
 .auth-btn:hover {
