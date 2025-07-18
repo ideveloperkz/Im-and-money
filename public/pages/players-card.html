@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Личный кабинет - Я и деньги</title>
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="players-card.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="logo">$</div>
+            <div class="nav-controls">
+                <button class="lang-btn">
+                    <span>🌐</span>
+                    <span>RU</span>
+                </button>
+                <button class="game-btn"><i class="fas fa-gamepad"></i> В игру</button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Как играть</a></li>
+            <li><a href="#">Правила</a></li>
+            <li><a href="#">Турниры</a></li>
+            <li><a href="#">Рейтинг</a></li>
+            <li><a href="#">Обучение</a></li>
+            <li><a href="#">Поддержка</a></li>
+            <li><a href="#">О проекте</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <h1 class="game-title">Моя финансовая карточка</h1>
+
+            <!-- Поля Мечта и Сумма мечты -->
+            <div class="dream-section">
+                <div class="input-group">
+                    <i class="fas fa-cloud"></i>
+                    <input type="text" id="dream" placeholder="Ваша мечта">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-money-bill"></i>
+                    <input type="number" id="dream-amount" placeholder="Сумма мечты">
+                </div>
+                <button class="save-dream-btn" id="save-dream"><i class="fas fa-save"></i> Сохранить мечту</button>
+            </div>
+
+            <!-- Таблица Доходы и расходы -->
+            <div class="table-section income-expense-section">
+                <h2><i class="fas fa-wallet"></i> Доходы и расходы</h2>
+                <table id="income-expense-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-dice"></i> Мои ходы</th>
+                            <th><i class="fas fa-dollar-sign"></i> Доходы</th>
+                            <th><i class="fas fa-shopping-cart"></i> Расходы</th>
+                            <th><i class="fas fa-piggy-bank"></i> Касса</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button class="table-btn" id="add-income-expense"><i class="fas fa-plus"></i> Внести в таблицу</button>
+            </div>
+
+            <!-- Таблица Навыки -->
+            <div class="table-section skills-section">
+                <h2><i class="fas fa-brain"></i> Навыки</h2>
+                <table id="skills-table">
+                    <thead>
+                        <tr>
+                            <th>Навык</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button class="table-btn" id="add-skill"><i class="fas fa-plus"></i> Добавить навык</button>
+            </div>
+
+            <!-- Таблица Бизнес и активы -->
+            <div class="table-section business-section">
+                <h2><i class="fas fa-building"></i> Бизнес и активы</h2>
+                <table id="business-table">
+                    <thead>
+                        <tr>
+                            <th>Бизнес/активы</th>
+                            <th>Сумма</th>
+                            <th>Денежный поток</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button class="table-btn" id="add-business"><i class="fas fa-plus"></i> Добавить бизнес/активы</button>
+            </div>
+
+            <!-- Таблица 4 копилки -->
+            <div class="table-section savings-section">
+                <h2><i class="fas fa-piggy-bank"></i> 4 копилки</h2>
+                <table id="savings-table">
+                    <thead>
+                        <tr>
+                            <th><i class="fas fa-hands-helping"></i> 10% Благотворительность</th>
+                            <th><i class="fas fa-cloud"></i> 20% Мечта</th>
+                            <th><i class="fas fa-piggy-bank"></i> 10% Сбережения</th>
+                            <th><i class="fas fa-chart-line"></i> 60% Инвестиции</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+                <button class="table-btn" id="add-savings"><i class="fas fa-plus"></i> Запись в таблицу</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подключение JavaScript -->
+    <script src="players-card.js"></script>
+</body>
+</html>
