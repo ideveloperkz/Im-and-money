@@ -105,7 +105,7 @@ body::before {
     box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
 }
 
-.back-btn {
+.game-btn {
     background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
     color: white;
     border: none;
@@ -116,13 +116,10 @@ body::before {
     font-weight: 600;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    text-decoration: none; /* Убирает подчеркивание */
 }
 
-.back-btn:hover {
+.game-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
 }
