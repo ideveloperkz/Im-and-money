@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Я и деньги</title>
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="../styles/admin-panel.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="logo">$</div>
+            <div class="nav-controls">
+                <button class="lang-btn">
+                    <span>🌐</span>
+                    <span>RU</span>
+                </button>
+                <button class="game-btn"><i class="fas fa-home"></i> На главную</button>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Как играть</a></li>
+            <li><a href="#">Правила</a></li>
+            <li><a href="#">Турниры</a></li>
+            <li><a href="#">Рейтинг</a></li>
+            <li><a href="#">Обучение</a></li>
+            <li><a href="#">Поддержка</a></li>
+            <li><a href="#">О проекте</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Экран логина -->
+            <div class="login-section" id="loginSection">
+                <div class="login-icon">
+                    <i class="fas fa-user-shield fa-5x"></i>
+                </div>
+                <h2 class="warning-title">Сюда могут попасть только администраторы! 😜 Если вы не админ, вам тут делать нечего!</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="admin-login" placeholder="Введите логин администратора">
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="admin-password" placeholder="Введите пароль администратора">
+                </div>
+                <button class="login-btn" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Войти</button>
+            </div>
+
+            <!-- Основной интерфейс админа (скрыт по умолчанию) -->
+            <div class="admin-section" id="adminSection" style="display: none;">
+                <h1 class="game-title">Панель администратора</h1>
+                <div class="table-section curator-section">
+                    <h2><i class="fas fa-user-plus"></i> Назначить куратора</h2>
+                    <table id="curator-table">
+                        <thead>
+                            <tr>
+                                <th>Логин куратора</th>
+                                <th>Пароль куратора</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <button class="table-btn" id="add-curator"><i class="fas fa-plus"></i> Добавить куратора</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подключение JavaScript -->
+    <script src="../scripts/admin-panel.js"></script>
+</body>
+</html>
