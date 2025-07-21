@@ -38,21 +38,21 @@ const tablesData = [
     {
         id: 1,
         tableNumber: 1,
-        curator: "Куратор Анна",
+        curator: "Куратор Жамиля",
         players: ["Игрок 1", "Игрок 2", "Игрок 3"],
         maxPlayers: 6
     },
     {
         id: 2,
         tableNumber: 2,
-        curator: "Куратор Максим",
+        curator: "Куратор Жамиля",
         players: ["Игрок 4", "Игрок 5"],
         maxPlayers: 9
     },
     {
         id: 3,
         tableNumber: 3,
-        curator: "Куратор София",
+        curator: "Куратор Жамиля",
         players: [],
         maxPlayers: 6
     }
