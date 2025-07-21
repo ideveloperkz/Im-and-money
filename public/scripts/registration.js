@@ -74,6 +74,8 @@ function handleSubmit(event) {
         }, 1500);
     } else {
         const name = document.getElementById('registerName').value;
+        const surname = document.getElementById('registerSurname').value;
+        const username = document.getElementById('registerUsername').value;
         const email = document.getElementById('registerEmail').value;
         const password = document.getElementById('registerPassword').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
@@ -87,7 +89,7 @@ function handleSubmit(event) {
         showLoading();
         setTimeout(() => {
             hideLoading();
-            alert('Регистрация прошла успешно! Добро пожаловать в игру!');
+            alert(`Регистрация прошла успешно! Добро пожаловать, ${name} ${surname} (@${username})!`);
             // Redirect to game
         }, 2000);
     }
