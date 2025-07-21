@@ -1,72 +1,7 @@
-// Header hide/show on scroll - ИСПРАВЛЕННАЯ ВЕРСИЯ
-let lastScrollY = window.pageYOffset || document.documentElement.scrollTop;
+// Убираем всю логику скрытия хедера - оставляем фиксированное меню
 const header = document.getElementById('header');
 const mobileMenu = document.getElementById('mobileMenu');
 const hamburger = document.getElementById('hamburger');
-
-// Дебаунсинг для оптимизации
-let ticking = false;
-
-function updateHeader() {
-    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    
-    // Защита от отрицательных значений при "резиновом" скролле
-    if (currentScrollY < 0) return;
-    
-    // Логика скрытия/показа хедера
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Скролл вниз и прошли 100px
-        header.classList.add('hidden');
-        closeMobileMenu();
-    } else if (currentScrollY < lastScrollY) {
-        // Скролл вверх
-        header.classList.remove('hidden');
-    }
-    
-    lastScrollY = currentScrollY;
-    ticking = false;
-}
-
-function requestTick() {
-    if (!ticking) {
-        requestAnimationFrame(updateHeader);
-        ticking = true;
-    }
-}
-
-// Используем requestAnimationFrame для плавности
-window.addEventListener('scroll', requestTick, { passive: true });
-
-// Альтернативный вариант с throttle (раскомментируйте если нужен)
-/*
-function throttle(func, limit) {
-    let inThrottle;
-    return function() {
-        const args = arguments;
-        const context = this;
-        if (!inThrottle) {
-            func.apply(context, args);
-            inThrottle = true;
-            setTimeout(() => inThrottle = false, limit);
-        }
-    }
-}
-
-window.addEventListener('scroll', throttle(() => {
-    const currentScrollY = window.pageYOffset || document.documentElement.scrollTop;
-    
-    if (currentScrollY < 0) return;
-    
-    if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        header.classList.add('hidden');
-        closeMobileMenu();
-    } else if (currentScrollY < lastScrollY) {
-        header.classList.remove('hidden');
-    }
-    
-    lastScrollY = currentScrollY;
-}, 16), { passive: true }); // ~60fps
-*/
 
 // Mobile menu toggle
 hamburger.addEventListener('click', () => {
