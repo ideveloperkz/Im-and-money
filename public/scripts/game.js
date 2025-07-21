@@ -1,48 +1,47 @@
 // Header hide/show on scroll
 let lastScrollY = window.scrollY;
 const header = document.getElementById('header');
+const mobileMenu = document.getElementById('mobileMenu');
+const hamburger = document.getElementById('hamburger');
+
 window.addEventListener('scroll', () => {
     if (window.scrollY > lastScrollY && window.scrollY > 100) {
         header.classList.add('hidden');
+        closeMobileMenu();
     } else {
         header.classList.remove('hidden');
     }
     lastScrollY = window.scrollY;
 });
 
-// Hamburger menu
-const hamburger = document.getElementById('hamburger');
-const mobileMenu = document.getElementById('mobileMenu');
+// Mobile menu toggle
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     mobileMenu.classList.toggle('active');
 });
 
-// Close mobile menu on click outside or scroll
-document.addEventListener('click', (event) => {
-    if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target)) {
-        hamburger.classList.remove('active');
-        mobileMenu.classList.remove('active');
-    }
-});
-window.addEventListener('scroll', () => {
+// Close mobile menu
+function closeMobileMenu() {
     hamburger.classList.remove('active');
     mobileMenu.classList.remove('active');
+}
+
+// Close menu when clicking outside
+document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
+        closeMobileMenu();
+    }
 });
 
 // Chat widget
 const chatWidget = document.getElementById('chatWidget');
 const chatPopup = document.getElementById('chatPopup');
 const chatModal = document.getElementById('chatModal');
+
 chatWidget.addEventListener('click', () => {
     chatModal.style.display = 'flex';
     chatPopup.classList.remove('active'); // Hide popup when modal opens
 });
-
-// Close chat modal
-function closeChatModal() {
-    chatModal.style.display = 'none';
-}
 
 // Show chat popup on hover
 chatWidget.addEventListener('mouseenter', () => {
@@ -51,6 +50,11 @@ chatWidget.addEventListener('mouseenter', () => {
 chatWidget.addEventListener('mouseleave', () => {
     chatPopup.classList.remove('active');
 });
+
+// Close chat modal
+function closeChatModal() {
+    chatModal.style.display = 'none';
+}
 
 // Reply to message (placeholder)
 function replyTo(username) {
