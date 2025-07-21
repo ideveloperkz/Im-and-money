@@ -1,0 +1,518 @@
+/* Используем существующие стили из registration.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(45deg, #4a90e2, #7bb3f0, #a8d0ff, #4a90e2);
+    background-size: 400% 400%;
+    animation: gradientShift 8s ease infinite;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="20" cy="20" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="3s" repeatCount="indefinite"/></circle><circle cx="80" cy="30" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="4s" repeatCount="indefinite"/></circle><circle cx="50" cy="70" r="1" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.5;0.1" dur="2s" repeatCount="indefinite"/></circle><circle cx="10" cy="80" r="1.5" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.3;0.1" dur="5s" repeatCount="indefinite"/></circle><circle cx="90" cy="70" r="2" fill="rgba(255,255,255,0.1)"><animate attributeName="opacity" values="0.1;0.4;0.1" dur="3.5s" repeatCount="indefinite"/></circle></svg>');
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Существующие стили для header, logo, nav-controls, hamburger, mobile-menu и т.д. */
+.header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    box-shadow: 0 2px 20px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: 15px 0;
+    transition: transform 0.3s ease;
+}
+
+.header.hidden {
+    transform: translateY(-100%);
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    transition: transform 0.3s ease;
+}
+
+.logo:hover {
+    transform: scale(1.1);
+}
+
+.nav-controls {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.lang-btn, .auth-btn {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
+    text-decoration: none;
+}
+
+.lang-btn:hover, .auth-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
+}
+
+.hamburger {
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    position: relative;
+    z-index: 1001;
+}
+
+.hamburger span {
+    display: block;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    margin: 5px 0;
+    transition: 0.3s;
+    border-radius: 3px;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.mobile-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 300px;
+    height: 100vh;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    box-shadow: -5px 0 20px rgba(0,0,0,0.1);
+    transition: right 0.3s ease;
+    z-index: 1000;
+    padding: 80px 30px 30px;
+    animation: menuGlow 2s ease-in-out infinite alternate;
+}
+
+.mobile-menu.active {
+    right: 0;
+}
+
+.mobile-menu ul {
+    list-style: none;
+}
+
+.mobile-menu li {
+    margin: 20px 0;
+}
+
+.mobile-menu a {
+    color: white;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 500;
+    display: block;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    transition: all 0.3s ease;
+    border-radius: 8px;
+    padding-left: 15px;
+}
+
+.mobile-menu a:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateX(10px);
+}
+
+/* Main Content */
+.main {
+    margin-top: 80px;
+    padding: 40px 0;
+    min-height: calc(100vh - 80px);
+    position: relative;
+    z-index: 2;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.game-section {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.game-title {
+    font-size: 48px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
+    animation: titleBounce 3s ease-in-out infinite;
+}
+
+.game-subtitle {
+    font-size: 18px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    animation: subtitleFade 3s ease-in-out infinite alternate;
+}
+
+.media-frame {
+    max-width: 800px;
+    margin: 0 auto 20px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    padding: 8px;
+    animation: frameFloat 6s ease-in-out infinite;
+}
+
+.media-placeholder {
+    width: 100%;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 12px;
+    position: relative;
+    overflow: hidden;
+}
+
+.media-placeholder::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(40, 167, 69, 0.1), transparent);
+    animation: shimmer 3s infinite;
+}
+
+.placeholder-content {
+    color: #28a745;
+    font-size: 18px;
+    z-index: 1;
+    text-align: center;
+    font-weight: 600;
+}
+
+.placeholder-icon {
+    font-size: 64px;
+    margin-bottom: 20px;
+    opacity: 0.7;
+    animation: iconSpin 4s linear infinite;
+}
+
+.game-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.play-button {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(40, 167, 69, 0.3);
+    position: relative;
+    overflow: hidden;
+    animation: buttonPulse 2s infinite;
+}
+
+.play-button:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 35px rgba(40, 167, 69, 0.4);
+}
+
+.play-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255,255,255,0.2);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.play-button:hover::before {
+    width: 200px;
+    height: 200px;
+}
+
+/* Chat Widget */
+.chat-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    transition: transform 0.3s ease;
+    z-index: 1000;
+}
+
+.chat-widget:hover {
+    transform: scale(1.1);
+}
+
+.chat-icon {
+    font-size: 24px;
+    color: white;
+}
+
+.chat-popup {
+    position: absolute;
+    bottom: 80px;
+    right: 0;
+    width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    display: none;
+}
+
+.chat-popup.active {
+    display: block;
+}
+
+.chat-message {
+    margin: 10px 0;
+    padding: 8px;
+    background: rgba(40, 167, 69, 0.1);
+    border-radius: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.chat-username {
+    font-weight: bold;
+    color: #28a745;
+}
+
+.chat-reply-btn {
+    background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.3s ease;
+}
+
+.chat-reply-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* Chat Modal */
+.chat-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.chat-modal-content {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 20px;
+    padding: 20px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    position: relative;
+    animation: modalFade 0.3s ease;
+}
+
+@keyframes modalFade {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.chat-close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 24px;
+    cursor: pointer;
+    color: #28a745;
+}
+
+.chat-messages {
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+}
+
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #28a745;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.chat-input .play-button {
+    padding: 10px 20px;
+    font-size: 14px;
+}
+
+/* Footer */
+.footer {
+    background: linear-gradient(135deg, #343a40 0%, #495057 100%);
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+}
+
+.footer-bottom p {
+    color: #adb5bd;
+    font-size: 16px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .game-title {
+        font-size: 36px;
+    }
+
+    .game-subtitle {
+        font-size: 16px;
+    }
+
+    .media-frame {
+        max-width: 100%;
+        height: 300px;
+    }
+
+    .game-actions {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .play-button {
+        padding: 12px 25px;
+        font-size: 16px;
+    }
+
+    .chat-widget {
+        width: 50px;
+        height: 50px;
+    }
+
+    .chat-popup {
+        width: 250px;
+        max-height: 150px;
+    }
+
+    .chat-modal-content {
+        width: 95%;
+    }
+}
+
+@media (max-width: 480px) {
+    .game-title {
+        font-size: 28px;
+    }
+
+    .media-frame {
+        height: 200px;
+    }
+
+    .chat-popup {
+        width: 200px;
+    }
+}
