@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Игровая лобби - Я и деньги</title>
+    <!-- Подключение Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Подключение CSS -->
+    <link rel="stylesheet" href="game-lobby.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <div class="logo">$</div>
+            <div class="nav-controls">
+                <button class="lang-btn">
+                    <span>🌐</span>
+                    <span>RU</span>
+                </button>
+                <a href="/index.html" class="game-btn"><i class="fas fa-home"></i> На главную</a>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <ul>
+            <li><a href="#">Главная</a></li>
+            <li><a href="#">Как играть</a></li>
+            <li><a href="#">Правила</a></li>
+            <li><a href="#">Турниры</a></li>
+            <li><a href="#">Рейтинг</a></li>
+            <li><a href="#">Обучение</a></li>
+            <li><a href="#">Поддержка</a></li>
+            <li><a href="#">О проекте</a></li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <h1 class="game-title">Игровое лобби</h1>
+            <div class="tables-section" id="tablesSection">
+                <!-- Карточки столов будут добавляться динамически через JS -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Подключение JavaScript -->
+    <script src="game-lobby.js"></script>
+</body>
+</html>
