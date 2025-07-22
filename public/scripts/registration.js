@@ -12,6 +12,120 @@ window.addEventListener('scroll', () => {
     lastScrollY = window.scrollY;
 });
 
+// API утилиты
+async function apiRequest(endpoint, method = 'GET', data = null) {
+    try {
+        const options = {
+            method,
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        if (data) {
+            options.body = JSON.stringify(data);
+        }
+
+        const response = await fetch(`/api/auth${endpoint}`, options);
+        const result = await response.json();
+
+        return {
+            success: response.ok,
+            data: result,
+            status: response.status
+        };
+    } catch (error) {
+        console.error('API Error:', error);
+        return {
+            success: false,
+            data: { message: 'Ошибка соединения с сервером' },
+            status: 0
+        };
+    }
+}
+
+// Валидация на фронтенде
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+function validatePassword(password) {
+    return password.length >= 6 && /(?=.*[A-Za-z])(?=.*\d)/.test(password);
+}
+
+function validateUsername(username) {
+    const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
+    return usernameRegex.test(username);
+}
+
+function sanitizeInput(input) {
+    return input.trim().replace(/[<>]/g, '');
+}
+
+// Показать ошибку
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.style.cssText = `
+        background: #ff4757;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 14px;
+        animation: slideIn 0.3s ease;
+    `;
+    errorDiv.textContent = message;
+
+    const form = document.getElementById('authForm');
+    const existingError = form.querySelector('.error-message');
+    if (existingError) {
+        existingError.remove();
+    }
+
+    form.insertBefore(errorDiv, form.firstChild);
+
+    // Автоудаление через 5 секунд
+    setTimeout(() => {
+        if (errorDiv.parentNode) {
+            errorDiv.remove();
+        }
+    }, 5000);
+}
+
+// Показать успех
+function showSuccess(message) {
+    const successDiv = document.createElement('div');
+    successDiv.className = 'success-message';
+    successDiv.style.cssText = `
+        background: #2ed573;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 8px;
+        margin: 10px 0;
+        font-size: 14px;
+        animation: slideIn 0.3s ease;
+    `;
+    successDiv.textContent = message;
+
+    const form = document.getElementById('authForm');
+    const existingSuccess = form.querySelector('.success-message');
+    if (existingSuccess) {
+        existingSuccess.remove();
+    }
+
+    form.insertBefore(successDiv, form.firstChild);
+
+    // Автоудаление через 3 секунды
+    setTimeout(() => {
+        if (successDiv.parentNode) {
+            successDiv.remove();
+        }
+    }, 3000);
+}
+
+// Переключение табов
 function switchTab(tab) {
     if (currentTab === tab) return;
 
@@ -22,6 +136,12 @@ function switchTab(tab) {
     const registerTab = document.getElementById('registerTab');
     const authTitle = document.getElementById('authTitle');
     const authSubtitle = document.getElementById('authSubtitle');
+
+    // Очистка сообщений об ошибках
+    const errorMessage = authForm.querySelector('.error-message');
+    const successMessage = authForm.querySelector('.success-message');
+    if (errorMessage) errorMessage.remove();
+    if (successMessage) successMessage.remove();
 
     // Add fade out animation
     authForm.classList.add('fade-out');
@@ -58,61 +178,202 @@ function switchTab(tab) {
     }, 150);
 }
 
-function handleSubmit(event) {
+// Обработка отправки формы
+async function handleSubmit(event) {
     event.preventDefault();
     
+    // Очистка предыдущих сообщений
+    const form = document.getElementById('authForm');
+    const errorMessage = form.querySelector('.error-message');
+    const successMessage = form.querySelector('.success-message');
+    if (errorMessage) errorMessage.remove();
+    if (successMessage) successMessage.remove();
+
     if (currentTab === 'login') {
-        const email = document.getElementById('loginEmail').value;
-        const password = document.getElementById('loginPassword').value;
-        
-        // Simulate login
-        showLoading();
-        setTimeout(() => {
-            hideLoading();
-            alert('Вход выполнен успешно! Добро пожаловать в игру!');
-            // Redirect to game
-        }, 1500);
+        await handleLogin();
     } else {
-        const name = document.getElementById('registerName').value;
-        const surname = document.getElementById('registerSurname').value;
-        const username = document.getElementById('registerUsername').value;
-        const email = document.getElementById('registerEmail').value;
-        const password = document.getElementById('registerPassword').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
-        
-        if (password !== confirmPassword) {
-            alert('Пароли не совпадают!');
-            return;
-        }
-        
-        // Simulate registration
-        showLoading();
-        setTimeout(() => {
-            hideLoading();
-            alert(`Регистрация прошла успешно! Добро пожаловать, ${name} ${surname} (@${username})!`);
-            // Redirect to game
-        }, 2000);
+        await handleRegister();
     }
 }
 
+// Обработка входа
+async function handleLogin() {
+    const email = sanitizeInput(document.getElementById('loginEmail').value);
+    const password = document.getElementById('loginPassword').value;
+    
+    // Валидация на фронтенде
+    if (!email || !password) {
+        showError('Пожалуйста, заполните все поля');
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        showError('Неверный формат email');
+        return;
+    }
+
+    // Показать загрузку
+    showLoading();
+
+    // Отправка запроса на сервер
+    const result = await apiRequest('/login', 'POST', { email, password });
+
+    hideLoading();
+
+    if (result.success) {
+        showSuccess(`Добро пожаловать, ${result.data.user.name}!`);
+        
+        // Сохранение данных пользователя (без чувствительной информации)
+        localStorage.setItem('user', JSON.stringify({
+            id: result.data.user.id,
+            name: result.data.user.name,
+            surname: result.data.user.surname,
+            username: result.data.user.username
+        }));
+
+        // Перенаправление через 2 секунды
+        setTimeout(() => {
+            window.location.href = '/'; // Перенаправление в игру
+        }, 2000);
+    } else {
+        showError(result.data.message || 'Ошибка входа');
+    }
+}
+
+// Обработка регистрации
+async function handleRegister() {
+    const name = sanitizeInput(document.getElementById('registerName').value);
+    const surname = sanitizeInput(document.getElementById('registerSurname').value);
+    const username = sanitizeInput(document.getElementById('registerUsername').value);
+    const email = sanitizeInput(document.getElementById('registerEmail').value);
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    
+    // Валидация на фронтенде
+    if (!name || !surname || !username || !email || !password || !confirmPassword) {
+        showError('Пожалуйста, заполните все поля');
+        return;
+    }
+
+    if (!validateEmail(email)) {
+        showError('Неверный формат email');
+        return;
+    }
+
+    if (!validatePassword(password)) {
+        showError('Пароль должен содержать минимум 6 символов, включая буквы и цифры');
+        return;
+    }
+
+    if (!validateUsername(username)) {
+        showError('Имя пользователя должно содержать 3-20 символов (буквы, цифры, подчеркивания)');
+        return;
+    }
+
+    if (password !== confirmPassword) {
+        showError('Пароли не совпадают');
+        return;
+    }
+
+    // Показать загрузку
+    showLoading();
+
+    // Отправка запроса на сервер
+    const result = await apiRequest('/register', 'POST', {
+        name,
+        surname,
+        username,
+        email,
+        password
+    });
+
+    hideLoading();
+
+    if (result.success) {
+        showSuccess(`Регистрация прошла успешно! Добро пожаловать, ${result.data.user.name} ${result.data.user.surname}!`);
+        
+        // Сохранение данных пользователя (без чувствительной информации)
+        localStorage.setItem('user', JSON.stringify({
+            id: result.data.user.id,
+            name: result.data.user.name,
+            surname: result.data.user.surname,
+            username: result.data.user.username
+        }));
+
+        // Перенаправление через 3 секунды
+        setTimeout(() => {
+            window.location.href = '/'; // Перенаправление в игру
+        }, 3000);
+    } else {
+        showError(result.data.message || 'Ошибка регистрации');
+    }
+}
+
+// Проверка доступности email в реальном времени
+let emailTimeout;
+async function checkEmailAvailability(email) {
+    if (emailTimeout) {
+        clearTimeout(emailTimeout);
+    }
+
+    emailTimeout = setTimeout(async () => {
+        if (email && validateEmail(email)) {
+            const result = await apiRequest('/check-email', 'POST', { email });
+            const emailInput = document.getElementById('registerEmail');
+            
+            if (result.success && result.data.exists) {
+                emailInput.style.borderColor = '#ff4757';
+                showError('Пользователь с таким email уже существует');
+            } else {
+                emailInput.style.borderColor = '#2ed573';
+            }
+        }
+    }, 500);
+}
+
+// Проверка доступности username в реальном времени
+let usernameTimeout;
+async function checkUsernameAvailability(username) {
+    if (usernameTimeout) {
+        clearTimeout(usernameTimeout);
+    }
+
+    usernameTimeout = setTimeout(async () => {
+        if (username && validateUsername(username)) {
+            const result = await apiRequest('/check-username', 'POST', { username });
+            const usernameInput = document.getElementById('registerUsername');
+            
+            if (result.success && result.data.exists) {
+                usernameInput.style.borderColor = '#ff4757';
+                showError('Имя пользователя уже занято');
+            } else {
+                usernameInput.style.borderColor = '#2ed573';
+            }
+        }
+    }, 500);
+}
+
+// Социальный вход (заглушка)
 function socialLogin(provider) {
     showLoading();
     setTimeout(() => {
         hideLoading();
-        alert(`Вход через ${provider} выполнен успешно!`);
-        // Redirect to game
+        showError(`Вход через ${provider} временно недоступен`);
     }, 1500);
 }
 
+// Восстановление пароля (заглушка)
 function forgotPassword() {
     const email = prompt('Введите ваш email для восстановления пароля:');
-    if (email) {
-        alert('Инструкции по восстановлению пароля отправлены на ваш email!');
+    if (email && validateEmail(email)) {
+        showSuccess('Инструкции по восстановлению пароля отправлены на ваш email!');
+    } else if (email) {
+        showError('Неверный формат email');
     }
 }
 
 function goHome() {
-    window.location.href = '#'; // Replace with actual home page URL
+    window.location.href = '/';
 }
 
 function showLoading() {
@@ -120,35 +381,58 @@ function showLoading() {
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Загрузка...';
-    
-    setTimeout(() => {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-    }, 2000);
+    submitBtn.setAttribute('data-original-text', originalText);
 }
 
 function hideLoading() {
     const submitBtn = document.querySelector('.submit-btn');
+    const originalText = submitBtn.getAttribute('data-original-text');
     submitBtn.disabled = false;
+    submitBtn.textContent = originalText || 'Войти';
 }
 
-// Add floating animation to form inputs
-document.querySelectorAll('.form-input').forEach(input => {
-    input.addEventListener('focus', function() {
-        this.style.transform = 'translateY(-2px)';
-    });
-    
-    input.addEventListener('blur', function() {
-        this.style.transform = 'translateY(0)';
-    });
-});
+// Добавление слушателей событий при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    // Добавление проверки email в реальном времени
+    const emailInput = document.getElementById('registerEmail');
+    if (emailInput) {
+        emailInput.addEventListener('input', (e) => {
+            const email = sanitizeInput(e.target.value);
+            if (email.length > 3) {
+                checkEmailAvailability(email);
+            }
+        });
+    }
 
-// Add click animation to buttons
-document.querySelectorAll('button, .social-btn').forEach(button => {
-    button.addEventListener('click', function() {
-        this.style.transform = 'scale(0.95)';
-        setTimeout(() => {
-            this.style.transform = '';
-        }, 100);
+    // Добавление проверки username в реальном времени
+    const usernameInput = document.getElementById('registerUsername');
+    if (usernameInput) {
+        usernameInput.addEventListener('input', (e) => {
+            const username = sanitizeInput(e.target.value);
+            if (username.length > 2) {
+                checkUsernameAvailability(username);
+            }
+        });
+    }
+
+    // Add floating animation to form inputs
+    document.querySelectorAll('.form-input').forEach(input => {
+        input.addEventListener('focus', function() {
+            this.style.transform = 'translateY(-2px)';
+        });
+        
+        input.addEventListener('blur', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Add click animation to buttons
+    document.querySelectorAll('button, .social-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        });
     });
 });
