@@ -102,7 +102,7 @@ body::before {
     box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
 }
 
-.auth-btn {
+.card-btn {
     background: linear-gradient(135deg, #ffc107 0%, #ff8c00 100%);
     color: white;
     border: none;
@@ -117,7 +117,7 @@ body::before {
     display: inline-block; /* Делаем <a> блочно-инлайн, чтобы стили отображались как у кнопки */
 }
 
-.auth-btn:hover {
+.card-btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
 }
