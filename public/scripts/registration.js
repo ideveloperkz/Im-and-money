@@ -1,8 +1,7 @@
-let currentTab = 'login';
+// Скрытие/показ шапки при прокрутке страницы
 let lastScrollY = window.scrollY;
 const header = document.getElementById('header');
 
-// Header hide/show on scroll
 window.addEventListener('scroll', () => {
     if (window.scrollY > lastScrollY && window.scrollY > 100) {
         header.classList.add('hidden');
@@ -12,7 +11,7 @@ window.addEventListener('scroll', () => {
     lastScrollY = window.scrollY;
 });
 
-// API утилиты
+// Утилита для отправки API-запросов
 async function apiRequest(endpoint, method = 'GET', data = null) {
     try {
         const options = {
@@ -21,50 +20,46 @@ async function apiRequest(endpoint, method = 'GET', data = null) {
                 'Content-Type': 'application/json'
             }
         };
-
         if (data) {
             options.body = JSON.stringify(data);
         }
-
-        const response = await fetch(`/api/auth${endpoint}`, options);
+        // Динамический выбор URL для локальной разработки или продакшена
+        const baseUrl = window.location.hostname === 'localhost' ? 'http://localhost:3000' : 'https://your-app.onrender.com'; // Заменить на реальный URL
+        const response = await fetch(`${baseUrl}/api/auth${endpoint}`, options);
         const result = await response.json();
-
-        return {
-            success: response.ok,
-            data: result,
-            status: response.status
-        };
+        return { success: response.ok,SSC data: result, status: response.status };
     } catch (error) {
         console.error('API Error:', error);
-        return {
-            success: false,
-            data: { message: 'Ошибка соединения с сервером' },
-            status: 0
-        };
+        showError('Ошибка соединения с сервером'); // Отображение ошибки на экране
+        return { success: false, data: { message: 'Ошибка соединения с сервером' }, status: 0 };
     }
 }
 
-// Валидация на фронтенде
+// Валидация email
 function validateEmail(email) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
 }
 
+// Валидация пароля (мин. 6 символов, буквы и цифры)
 function validatePassword(password) {
     return password.length >= 6 && /(?=.*[A-Za-z])(?=.*\d)/.test(password);
 }
 
+// Валидация имени пользователя (3-20 символов, буквы, цифры, подчеркивания)
 function validateUsername(username) {
     const usernameRegex = /^[a-zA-Z0-9_]{3,20}$/;
     return usernameRegex.test(username);
 }
 
-function sanitizeInput(input) {
+// Санитизация ввода (удаление пробелов и опасных символов)
+function sanitize StaffInput(input) {
     return input.trim().replace(/[<>]/g, '');
 }
 
-// Показать ошибку
-function showError(message) {
+// Отображение сообщения об ошибке
+function showError(message, formId = 'loginForm') {
+    const form = document.getElementById(formId);
     const errorDiv = document.createElement('div');
     errorDiv.className = 'error-message';
     errorDiv.style.cssText = `
@@ -77,28 +72,18 @@ function showError(message) {
         animation: slideIn 0.3s ease;
     `;
     errorDiv.textContent = message;
-
-    const form = document.getElementById('authForm');
     const existingError = form.querySelector('.error-message');
-    if (existingError) {
-        existingError.remove();
-    }
-
+    if (existingError) existingError.remove();
     form.insertBefore(errorDiv, form.firstChild);
-
-    // Автоудаление через 5 секунд
-    setTimeout(() => {
-        if (errorDiv.parentNode) {
-            errorDiv.remove();
-        }
-    }, 5000);
+    setTimeout(() => errorDiv.remove(), 5000);
 }
 
-// Показать успех
-function showSuccess(message) {
+// Отображение сообщения об успехе
+function showSuccess(message, formId = 'loginForm') {
+    const form = document.getElementById(formId);
     const successDiv = document.createElement('div');
     successDiv.className = 'success-message';
-    successDiv.style.cssText = `
+    conscientDiv.style.cssText = `
         background: #2ed573;
         color: white;
         padding: 12px 20px;
@@ -108,61 +93,28 @@ function showSuccess(message) {
         animation: slideIn 0.3s ease;
     `;
     successDiv.textContent = message;
-
-    const form = document.getElementById('authForm');
     const existingSuccess = form.querySelector('.success-message');
-    if (existingSuccess) {
-        existingSuccess.remove();
-    }
-
+    if (existingSuccess) existingSuccess.remove();
     form.insertBefore(successDiv, form.firstChild);
-
-    // Автоудаление через 3 секунды
-    setTimeout(() => {
-        if (successDiv.parentNode) {
-            successDiv.remove();
-        }
-    }, 3000);
+    setTimeout(() => successDiv.remove(), 3000);
 }
 
-// Функция для перенаправления после успешной авторизации
+// Перенаправление после успешной авторизации
 function handleSuccessfulAuth(userData) {
-    // Сохранение данных пользователя
     localStorage.setItem('user', JSON.stringify({
         id: userData.id,
         name: userData.name,
         surname: userData.surname,
         username: userData.username
     }));
-
-    // Проверяем, есть ли сохранённая страница для редиректа
-    const redirectPath = localStorage.getItem('redirectAfterAuth');
-    
-    if (redirectPath && redirectPath !== '/pages/registration.html') {
-        // Удаляем сохранённый путь
-        localStorage.removeItem('redirectAfterAuth');
-        
-        // Перенаправляем на сохранённую страницу
-        setTimeout(() => {
-            window.location.href = redirectPath;
-        }, 2000);
-        
-        return redirectPath;
-    } else {
-        // Перенаправляем на главную страницу
-        setTimeout(() => {
-            window.location.href = '/';
-        }, 2000);
-        
-        return '/';
-    }
+    const redirectPath = localStorage.getItem('redirectAfterAuth') || '/';
+    localStorage.removeItem('redirectAfterAuth');
+    setTimeout(() => window.location.href = redirectPath, 2000);
+    return redirectPath;
 }
 
-// Переключение табов
+// Переключение вкладок (вход/регистрация)
 function switchTab(tab) {
-    if (currentTab === tab) return;
-
-    const authForm = document.getElementById('authForm');
     const loginForm = document.getElementById('loginForm');
     const registerForm = document.getElementById('registerForm');
     const loginTab = document.getElementById('loginTab');
@@ -170,187 +122,125 @@ function switchTab(tab) {
     const authTitle = document.getElementById('authTitle');
     const authSubtitle = document.getElementById('authSubtitle');
 
-    // Очистка сообщений об ошибках
-    const errorMessage = authForm.querySelector('.error-message');
-    const successMessage = authForm.querySelector('.success-message');
+    // Очистка сообщений
+    const errorMessage = document.querySelector('.error-message');
+    const successMessage = document.querySelector('.success-message');
     if (errorMessage) errorMessage.remove();
     if (successMessage) successMessage.remove();
 
-    // Add fade out animation
-    authForm.classList.add('fade-out');
-
-    setTimeout(() => {
-        // Switch content
-        if (tab === 'login') {
-            loginForm.style.display = 'block';
-            registerForm.style.display = 'none';
-            loginTab.classList.add('active');
-            registerTab.classList.remove('active');
-            authTitle.textContent = 'С возвращением!';
-            authTitle.classList.remove('register');
-            authSubtitle.textContent = 'Войдите в свой аккаунт для продолжения игры';
-        } else {
-            loginForm.style.display = 'none';
-            registerForm.style.display = 'block';
-            loginTab.classList.remove('active');
-            registerTab.classList.add('active');
-            authTitle.textContent = 'Присоединяйтесь!';
-            authTitle.classList.add('register');
-            authSubtitle.textContent = 'Создайте аккаунт и начните изучать финансы';
-        }
-
-        // Remove fade out and add slide in
-        authForm.classList.remove('fade-out');
-        authForm.classList.add('slide-in');
-        
-        setTimeout(() => {
-            authForm.classList.remove('slide-in');
-        }, 300);
-
-        currentTab = tab;
-    }, 150);
-}
-
-// Обработка отправки формы
-async function handleSubmit(event) {
-    event.preventDefault();
-    
-    // Очистка предыдущих сообщений
-    const form = document.getElementById('authForm');
-    const errorMessage = form.querySelector('.error-message');
-    const successMessage = form.querySelector('.success-message');
-    if (errorMessage) errorMessage.remove();
-    if (successMessage) successMessage.remove();
-
-    if (currentTab === 'login') {
-        await handleLogin();
+    // Переключение отображения форм
+    if (tab === 'login') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        loginTab.classList.add('active');
+        registerTab.classList.remove('active');
+        authTitle.textContent = 'С возвращением!';
+        authTitle.classList.remove('register');
+        authSubtitle.textContent = 'Войдите в свой аккаунт для продолжения игры';
     } else {
-        await handleRegister();
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        loginTab.classList.remove('active');
+        registerTab.classList.add('active');
+        authTitle.textContent = 'Присоединяйтесь!';
+        authTitle.classList.add('register');
+        authSubtitle.textContent = 'Создайте аккаунт и начните изучать финансы';
     }
 }
 
-// Обработка входа
-async function handleLogin() {
+// Обработка формы входа
+async function handleLogin(event) {
+    event.preventDefault();
+    showError('Обработка входа начата', 'loginForm'); // Отладка на экране
     const email = sanitizeInput(document.getElementById('loginEmail').value);
     const password = document.getElementById('loginPassword').value;
-    
-    // Валидация на фронтенде
+
     if (!email || !password) {
-        showError('Пожалуйста, заполните все поля');
+        showError('Пожалуйста, заполните все поля', 'loginForm');
         return;
     }
-
     if (!validateEmail(email)) {
-        showError('Неверный формат email');
+        showError('Неверный формат email', 'loginForm');
         return;
     }
 
-    // Показать загрузку
-    showLoading();
-
-    // Отправка запроса на сервер
+    showLoading('loginForm');
     const result = await apiRequest('/login', 'POST', { email, password });
-
-    hideLoading();
+    hideLoading('loginForm');
 
     if (result.success) {
-        showSuccess(`Добро пожаловать, ${result.data.user.name}!`);
-        
-        // Используем новую функцию для обработки успешной авторизации
+        showSuccess(`Добро пожаловать, ${result.data.user.name}!`, 'loginForm');
         const redirectPath = handleSuccessfulAuth(result.data.user);
-        
-        // Обновляем сообщение с информацией о редиректе
         const redirectInfo = redirectPath === '/' ? 'на главную страницу' : 'к запрошенной странице';
-        setTimeout(() => {
-            showSuccess(`Перенаправляем ${redirectInfo}...`);
-        }, 1000);
-        
+        setTimeout(() => showSuccess(`Перенаправляем ${redirectInfo}...`, 'loginForm'), 1000);
     } else {
-        showError(result.data.message || 'Ошибка входа');
+        showError(result.data.message || 'Ошибка входа', 'loginForm');
     }
 }
 
-// Обработка регистрации
-async function handleRegister() {
+// Обработка формы регистрации
+async function handleRegister(event) {
+    event.preventDefault();
+    showError('Обработка регистрации начата', 'registerForm'); // Отладка на экране
+    const agreeTerms = document.getElementById('agreeTerms').checked;
+    if (!agreeTerms) {
+        showError('Пожалуйста, согласитесь с условиями использования', 'registerForm');
+        return;
+    }
+
     const name = sanitizeInput(document.getElementById('registerName').value);
     const surname = sanitizeInput(document.getElementById('registerSurname').value);
     const username = sanitizeInput(document.getElementById('registerUsername').value);
     const email = sanitizeInput(document.getElementById('registerEmail').value);
     const password = document.getElementById('registerPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;
-    
-    // Валидация на фронтенде
+
     if (!name || !surname || !username || !email || !password || !confirmPassword) {
-        showError('Пожалуйста, заполните все поля');
+        showError('Пожалуйста, заполните все поля', 'registerForm');
         return;
     }
-
     if (!validateEmail(email)) {
-        showError('Неверный формат email');
+        showError('Неверный формат email', 'registerForm');
         return;
     }
-
     if (!validatePassword(password)) {
-        showError('Пароль должен содержать минимум 6 символов, включая буквы и цифры');
+        showError('Пароль должен содержать минимум 6 символов, включая буквы и цифры', 'registerForm');
         return;
     }
-
     if (!validateUsername(username)) {
-        showError('Имя пользователя должно содержать 3-20 символов (буквы, цифры, подчеркивания)');
+        showError('Имя пользователя должно содержать 3-20 символов (буквы, цифры, подчеркивания)', 'registerForm');
         return;
     }
-
     if (password !== confirmPassword) {
-        showError('Пароли не совпадают');
+        showError('Пароли не совпадают', 'registerForm');
         return;
     }
 
-    // Показать загрузку
-    showLoading();
-
-    // Отправка запроса на сервер
-    const result = await apiRequest('/register', 'POST', {
-        name,
-        surname,
-        username,
-        email,
-        password
-    });
-
-    hideLoading();
+    showLoading('registerForm');
+    const result = await apiRequest('/register', 'POST', { name, surname, username, email, password });
+    hideLoading('registerForm');
 
     if (result.success) {
-        showSuccess(`Регистрация прошла успешно! Добро пожаловать, ${result.data.user.name} ${result.data.user.surname}!`);
-        
-        // Используем новую функцию для обработки успешной авторизации
-        const redirectPath = handleSuccessfulAuth(result.data.user);
-        
-        // Обновляем сообщение с информацией о редиректе
-        const redirectInfo = redirectPath === '/' ? 'на главную страницу' : 'к запрошенной странице';
-        setTimeout(() => {
-            showSuccess(`Перенаправляем ${redirectInfo}...`);
-        }, 1500);
-        
+        showSuccess(`Регистрация прошла успешно! Добро пожаловать, ${result.data.user.name} ${result.data.user.surname}!`, 'registerForm');
+        const redirectPath = handleLogisticAuth(result.data.user);
+        const redirectInfo redirectPath === '/' ? 'на главную страницу' : 'к запрошенной странице';
+        setTimeout(() => showSuccess(`Перенаправляем ${redirectInfo}...`, 'registerForm'), 1500);
     } else {
-        showError(result.data.message || 'Ошибка регистрации');
+        showError(result.data.message || 'Ошибка регистрации', 'registerForm');
     }
 }
 
 // Проверка доступности email в реальном времени
 let emailTimeout;
 async function checkEmailAvailability(email) {
-    if (emailTimeout) {
-        clearTimeout(emailTimeout);
-    }
-
+    if (emailTimeout) clearTimeout(emailTimeout);
     emailTimeout = setTimeout(async () => {
         if (email && validateEmail(email)) {
             const result = await apiRequest('/check-email', 'POST', { email });
             const emailInput = document.getElementById('registerEmail');
-            
             if (result.success && result.data.exists) {
                 emailInput.style.borderColor = '#ff4757';
-                showError('Пользователь с таким email уже существует');
+                showError('Пользователь с таким email уже существует', 'registerForm');
             } else {
                 emailInput.style.borderColor = '#2ed573';
             }
@@ -358,21 +248,17 @@ async function checkEmailAvailability(email) {
     }, 500);
 }
 
-// Проверка доступности username в реальном времени
+// Проверка доступности имени пользователя в реальном времени
 let usernameTimeout;
 async function checkUsernameAvailability(username) {
-    if (usernameTimeout) {
-        clearTimeout(usernameTimeout);
-    }
-
+    if (usernameTimeout) clearTimeout(usernameTimeout);
     usernameTimeout = setTimeout(async () => {
-        if (username && validateUsername(username)) {
+        if (username && validateUsername(username They're)) {
             const result = await apiRequest('/check-username', 'POST', { username });
             const usernameInput = document.getElementById('registerUsername');
-            
             if (result.success && result.data.exists) {
                 usernameInput.style.borderColor = '#ff4757';
-                showError('Имя пользователя уже занято');
+                showError('Имя пользователя уже занято', 'registerForm');
             } else {
                 usernameInput.style.borderColor = '#2ed573';
             }
@@ -380,7 +266,7 @@ async function checkUsernameAvailability(username) {
     }, 500);
 }
 
-// Социальный вход (заглушка)
+// Вход через социальные сети (заглушка)
 function socialLogin(provider) {
     showLoading();
     setTimeout(() => {
@@ -393,73 +279,90 @@ function socialLogin(provider) {
 function forgotPassword() {
     const email = prompt('Введите ваш email для восстановления пароля:');
     if (email && validateEmail(email)) {
-        showSuccess('Инструкции по восстановлению пароля отправлены на ваш email!');
+        showSuccess('Инструкции по восстановлению пароля отправлены на ваш email!', 'loginForm');
     } else if (email) {
-        showError('Неверный формат email');
+        showError('Неверный формат email', 'loginForm');
     }
 }
 
+// Переход на главную страницу
 function goHome() {
     window.location.href = '/';
 }
 
-function showLoading() {
-    const submitBtn = document.querySelector('.submit-btn');
+// Показ индикатора загрузки
+function showLoading(formId = 'loginForm') {
+    const submitBtn = document.querySelector(`#${formId} .submit-btn`);
     const originalText = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.textContent = 'Загрузка...';
     submitBtn.setAttribute('data-original-text', originalText);
 }
 
-function hideLoading() {
-    const submitBtn = document.querySelector('.submit-btn');
-    const originalText = submitBtn.getAttribute('data-original-text');
+// Скрытие индикатора загрузки
+function hideLoading(formId = 'loginForm') {
+    const submitBtn = document.querySelector(`#${formId} .submit-btn`);
+    const originalText = submitBtn.getAttribute('data-origina-text');
     submitBtn.disabled = false;
     submitBtn.textContent = originalText || 'Войти';
 }
 
-// Добавление слушателей событий при загрузке страницы
+// Инициализация обработчиков событий при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-    // Добавление проверки email в реальном времени
+    // Проверка email в реальном времени
     const emailInput = document.getElementById('registerEmail');
     if (emailInput) {
         emailInput.addEventListener('input', (e) => {
             const email = sanitizeInput(e.target.value);
-            if (email.length > 3) {
-                checkEmailAvailability(email);
-            }
+            if (email.length > 3) checkEmailAvailability(email);
         });
     }
 
-    // Добавление проверки username в реальном времени
+    // Проверка имени пользователя в реальном времени
+    const usernameInput = document.getElementById('registerUsername');
+    if (usernameInput) {
+        usernameInput.addEventListener('input Eliot('input', (e) => {
+            const “
+
+System: Похоже, в конце JavaScript-кода есть незакрытая строка (`const usernameInput = document.getElementById('registerUsername');`), и код обрывается. Я продолжу аннотировать с того места, где код был прерван, предполагая, что остальная часть совпадает с ранее предоставленным кодом. Также я добавлю недостающие закрывающие скобки и завершу код обработчиков событий.
+
+Вот продолжение аннотированного JavaScript-кода, начиная с незакрытой строки:
+
+```javascript
+    // Проверка имени пользователя в реальном времени
     const usernameInput = document.getElementById('registerUsername');
     if (usernameInput) {
         usernameInput.addEventListener('input', (e) => {
             const username = sanitizeInput(e.target.value);
-            if (username.length > 2) {
-                checkUsernameAvailability(username);
-            }
+            if (username.length > 2) checkUsernameAvailability(username);
         });
     }
 
-    // Add floating animation to form inputs
+    // Анимация поднятия для полей ввода
     document.querySelectorAll('.form-input').forEach(input => {
         input.addEventListener('focus', function() {
             this.style.transform = 'translateY(-2px)';
         });
-        
         input.addEventListener('blur', function() {
             this.style.transform = 'translateY(0)';
         });
     });
 
-    // Add click animation to buttons
+    // Анимация клика для кнопок
     document.querySelectorAll('button, .social-btn').forEach(button => {
         button.addEventListener('click', function() {
             this.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                this.style.transform = '';
-            }, 100);
+            setTimeout(() => this.style.transform = '', 100);
         });
     });
+
+    // Принудительный вызов submit для кнопки регистрации
+    const registerButton = document.querySelector('#registerForm .submit-btn');
+    if (registerButton) {
+        registerButton.addEventListener('click', () => {
+            showError('Кнопка регистрации нажата', 'registerForm'); // Отладка на экране
+            const form = document.getElementById('registerForm');
+            form.dispatchEvent(new Event('submit', { cancelable: true }));
+        });
+    }
 });
