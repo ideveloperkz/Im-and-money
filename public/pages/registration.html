@@ -36,9 +36,9 @@
                 </button>
             </div>
 
-            <!-- Login Form -->
-            <form class="auth-form" id="loginForm" onsubmit="handleLogin(event)">
-                <div id="loginFormContent">
+            <form class="auth-form" id="authForm" onsubmit="handleSubmit(event)">
+                <!-- Login Form -->
+                <div id="loginForm">
                     <div class="form-group">
                         <label class="form-label" for="loginEmail">Email</label>
                         <input type="email" class="form-input" id="loginEmail" required>
@@ -54,45 +54,43 @@
                         <a href="#" onclick="forgotPassword()">Забыли пароль?</a>
                     </div>
                 </div>
-            </form>
-
-            <!-- Register Form -->
-            <form class="auth-form" id="registerForm" style="display: none;" onsubmit="handleRegister(event)">
-                <div id="registerFormContent">
-                    <div class="form-group">
-                        <label class="form-label" for="registerName">Имя</label>
-                        <input type="text" class="form-input" id="registerName" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="registerSurname">Фамилия</label>
-                        <input type="text" class="form-input" id="registerSurname" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="registerUsername">Имя пользователя</label>
-                        <input type="text" class="form-input" id="registerUsername" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="registerEmail">Email</label>
-                        <input type="email" class="form-input" id="registerEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="registerPassword">Пароль</label>
-                        <input type="password" class="form-input" id="registerPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label" for="confirmPassword">Подтверждение пароля</label>
-                        <input type="password" class="form-input" id="confirmPassword" required>
-                    </div>
-                    <div class="checkbox-group">
-                        <input type="checkbox" class="checkbox" id="agreeTerms" required>
-                        <label class="checkbox-label" for="agreeTerms">
-                            Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a>
-                        </label>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        🎮 Создать аккаунт
-                    </button>
-                </div>
+                
+                <!-- Register Form -->
+<div id="registerForm" style="display: none;">
+    <div class="form-group">
+        <label class="form-label" for="registerName">Имя</label>
+        <input type="text" class="form-input" id="registerName" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="registerSurname">Фамилия</label>
+        <input type="text" class="form-input" id="registerSurname" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="registerUsername">Имя пользователя</label>
+        <input type="text" class="form-input" id="registerUsername" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="registerEmail">Email</label>
+        <input type="email" class="form-input" id="registerEmail" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="registerPassword">Пароль</label>
+        <input type="password" class="form-input" id="registerPassword" required>
+    </div>
+    <div class="form-group">
+        <label class="form-label" for="confirmPassword">Подтверждение пароля</label>
+        <input type="password" class="form-input" id="confirmPassword" required>
+    </div>
+    <div class="checkbox-group">
+        <input type="checkbox" class="checkbox" id="agreeTerms" required>
+        <label class="checkbox-label" for="agreeTerms">
+            Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a>
+        </label>
+    </div>
+    <button type="submit" class="submit-btn">
+        🎮 Создать аккаунт
+    </button>
+</div>
             </form>
 
             <div class="divider">
