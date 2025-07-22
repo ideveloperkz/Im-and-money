@@ -125,6 +125,39 @@ function showSuccess(message) {
     }, 3000);
 }
 
+// Функция для перенаправления после успешной авторизации
+function handleSuccessfulAuth(userData) {
+    // Сохранение данных пользователя
+    localStorage.setItem('user', JSON.stringify({
+        id: userData.id,
+        name: userData.name,
+        surname: userData.surname,
+        username: userData.username
+    }));
+
+    // Проверяем, есть ли сохранённая страница для редиректа
+    const redirectPath = localStorage.getItem('redirectAfterAuth');
+    
+    if (redirectPath && redirectPath !== '/pages/registration.html') {
+        // Удаляем сохранённый путь
+        localStorage.removeItem('redirectAfterAuth');
+        
+        // Перенаправляем на сохранённую страницу
+        setTimeout(() => {
+            window.location.href = redirectPath;
+        }, 2000);
+        
+        return redirectPath;
+    } else {
+        // Перенаправляем на главную страницу
+        setTimeout(() => {
+            window.location.href = '/';
+        }, 2000);
+        
+        return '/';
+    }
+}
+
 // Переключение табов
 function switchTab(tab) {
     if (currentTab === tab) return;
@@ -223,18 +256,15 @@ async function handleLogin() {
     if (result.success) {
         showSuccess(`Добро пожаловать, ${result.data.user.name}!`);
         
-        // Сохранение данных пользователя (без чувствительной информации)
-        localStorage.setItem('user', JSON.stringify({
-            id: result.data.user.id,
-            name: result.data.user.name,
-            surname: result.data.user.surname,
-            username: result.data.user.username
-        }));
-
-        // Перенаправление через 2 секунды
+        // Используем новую функцию для обработки успешной авторизации
+        const redirectPath = handleSuccessfulAuth(result.data.user);
+        
+        // Обновляем сообщение с информацией о редиректе
+        const redirectInfo = redirectPath === '/' ? 'на главную страницу' : 'к запрошенной странице';
         setTimeout(() => {
-            window.location.href = '/'; // Перенаправление в игру
-        }, 2000);
+            showSuccess(`Перенаправляем ${redirectInfo}...`);
+        }, 1000);
+        
     } else {
         showError(result.data.message || 'Ошибка входа');
     }
@@ -292,18 +322,15 @@ async function handleRegister() {
     if (result.success) {
         showSuccess(`Регистрация прошла успешно! Добро пожаловать, ${result.data.user.name} ${result.data.user.surname}!`);
         
-        // Сохранение данных пользователя (без чувствительной информации)
-        localStorage.setItem('user', JSON.stringify({
-            id: result.data.user.id,
-            name: result.data.user.name,
-            surname: result.data.user.surname,
-            username: result.data.user.username
-        }));
-
-        // Перенаправление через 3 секунды
+        // Используем новую функцию для обработки успешной авторизации
+        const redirectPath = handleSuccessfulAuth(result.data.user);
+        
+        // Обновляем сообщение с информацией о редиректе
+        const redirectInfo = redirectPath === '/' ? 'на главную страницу' : 'к запрошенной странице';
         setTimeout(() => {
-            window.location.href = '/'; // Перенаправление в игру
-        }, 3000);
+            showSuccess(`Перенаправляем ${redirectInfo}...`);
+        }, 1500);
+        
     } else {
         showError(result.data.message || 'Ошибка регистрации');
     }
