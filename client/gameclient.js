@@ -1720,3 +1720,4 @@ function showSpeechBubble(playerId, text) {
     }, 4500);
 }
 
+
