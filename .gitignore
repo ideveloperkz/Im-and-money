@@ -1,0 +1,6 @@
+node_modules/
+.env
+.DS_Store
+*.log
+# Backup files
+server/models/GameState_BACKUP.js
