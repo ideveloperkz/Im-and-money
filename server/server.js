@@ -4,15 +4,23 @@ const { Server } = require('socket.io');
 const gameState = require('./models/GameState');
 const board = require('./board');
 const cellsData = require('./data/cells.json');
+const path = require('path');
+const express = require('express');
+const app = express();
 
 // Конфигурация
 const PORT = process.env.PORT || 8080;
 const GAME_PASSWORD = process.env.GAME_PASSWORD || 'game';
 
 // Создать HTTP сервер
-const server = http.createServer((req, res) => {
-    res.writeHead(200);
-    res.end('OK');
+const server = http.createServer(app);
+
+// Раздача статики для Render
+app.use(express.static(path.join(__dirname, '../client')));
+
+// Главная страница
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/board.html'));
 });
 
 // Создать Socket.IO сервер
