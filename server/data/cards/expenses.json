@@ -1,0 +1,573 @@
+{
+    "cards": [
+        {
+            "nr": 1,
+            "id": "exp_attraction_10c",
+            "title": "АТТРАКЦИОН",
+            "description_self": "Ты покатался на аттракционах и потратил 10¢.",
+            "description_others": "Игрок {Player} покатался на аттракционах и потратил 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на аттракционы.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на аттракционы."
+            }
+        },
+        {
+            "nr": 2,
+            "id": "exp_attraction_7c",
+            "title": "АТТРАКЦИОН",
+            "description_self": "Вы с друзьями решили сходить в кинотеатр. Потратили 7¢.",
+            "description_others": "Игрок {Player} сходил в кинотеатр за 7¢.",
+            "action": "pay",
+            "value": -7,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на кинотеатр.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на кинотеатр."
+            }
+        },
+        {
+            "nr": 3,
+            "id": "exp_watering_can_12c",
+            "title": "ЛЕЙКА",
+            "description_self": "Поливая цветы, ты уронил лейку с водой и разбил её. Новая лейка стоит 12¢.",
+            "description_others": "Игрок {Player} купил новую лейку за 12¢.",
+            "action": "pay",
+            "value": -12,
+            "messages": {
+                "msg_success": "Вы купили новую лейку за {Amount}¢.",
+                "msg_success_log": "{Player} купил новую лейку за {Amount}¢."
+            }
+        },
+        {
+            "nr": "4, 1",
+            "id": "exp_courses_german_70c",
+            "title": "КУРСЫ",
+            "description_self": "Предлагаем пройти курсы немецкого языка. Вы научитесь переводить документы. Стоимость: 70¢.",
+            "description_others": "Игрок {Player} получил предложение пройти курсы немецкого языка за 70¢.",
+            "action": "buy_business",
+            "price": 70,
+            "income": 0,
+            "name": "Курсы немецкого",
+            "skill": "translator_german",
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы прошли курсы немецкого! Стоимость: {Amount}¢.",
+                "msg_success_log": "{Player} прошел курсы немецкого.",
+                "msg_fail": "Недостаточно средств.",
+                "msg_decline": "Вы отказались от курсов.",
+                "msg_decline_log": "{Player} отказался от курсов."
+            }
+        },
+        {
+            "nr": "5, 1",
+            "id": "exp_courses_french_70c",
+            "title": "КУРСЫ",
+            "description_self": "Предлагаем пройти курсы французского языка. Вы научитесь переводить документы. Стоимость: 70¢.",
+            "description_others": "Игрок {Player} получил предложение пройти курсы французского языка за 70¢.",
+            "action": "buy_business",
+            "price": 70,
+            "income": 0,
+            "name": "Курсы французского",
+            "skill": "translator_french",
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы прошли курсы французского! Стоимость: {Amount}¢.",
+                "msg_success_log": "{Player} прошел курсы французского.",
+                "msg_fail": "Недостаточно средств.",
+                "msg_decline": "Вы отказались от курсов.",
+                "msg_decline_log": "{Player} отказался от курсов."
+            }
+        },
+        {
+            "nr": 6,
+            "id": "exp_computer_game_8c",
+            "title": "КОМПЬЮТЕРНАЯ ИГРА",
+            "description_self": "Вы зашли в магазин компьютерной техники, и купили новую компьютерную игру за 8¢.",
+            "description_others": "Игрок {Player} купил компьютерную игру за 8¢.",
+            "action": "pay",
+            "value": -8,
+            "messages": {
+                "msg_success": "Вы купили компьютерную игру за {Amount}¢.",
+                "msg_success_log": "{Player} купил компьютерную игру за {Amount}¢."
+            }
+        },
+        {
+            "nr": 7,
+            "id": "exp_fast_food_4c",
+            "title": "ФАСТФУД",
+            "description_self": "После уроков вам захотелось покушать фастфуд. Вы потратили 4¢.",
+            "description_others": "Игрок {Player} купил фастфуд за 4¢.",
+            "action": "pay",
+            "value": -4,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на фастфуд.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на фастфуд."
+            }
+        },
+        {
+            "nr": "8, 1",
+            "id": "exp_courses_chinese_70c",
+            "title": "КУРСЫ",
+            "description_self": "Предлагаем пройти курсы китайского языка. Вы научитесь переводить документы. Стоимость: 70¢.",
+            "description_others": "Игрок {Player} получил предложение пройти курсы китайского языка за 70¢.",
+            "action": "buy_business",
+            "price": 70,
+            "income": 0,
+            "name": "Курсы китайского",
+            "skill": "translator_chinese",
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы прошли курсы китайского! Стоимость: {Amount}¢.",
+                "msg_success_log": "{Player} прошел курсы китайского.",
+                "msg_fail": "Недостаточно средств.",
+                "msg_decline": "Вы отказались от курсов.",
+                "msg_decline_log": "{Player} отказался от курсов."
+            }
+        },
+        {
+            "nr": 9,
+            "id": "exp_ice_cream_4c",
+            "title": "МОРОЖЕНОЕ",
+            "description_self": "В парке с друзьями вам захотелось мороженое. У друзей денег не было и вам пришлось заплатить 4¢.",
+            "description_others": "Игрок {Player} заплатил за мороженое 4¢.",
+            "action": "pay",
+            "value": -4,
+            "messages": {
+                "msg_success": "Вы купили мороженое за {Amount}¢.",
+                "msg_success_log": "{Player} купил мороженое за {Amount}¢."
+            }
+        },
+        {
+            "nr": 10,
+            "id": "exp_cinema_8c",
+            "title": "КИНОТЕАТР",
+            "description_self": "Вы с друзьями решили сходить в кинотеатр. Потратили 8¢.",
+            "description_others": "Игрок {Player} сходил в кинотеатр за 8¢.",
+            "action": "pay",
+            "value": -8,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на кинотеатр.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на кинотеатр."
+            }
+        },
+        {
+            "nr": 11,
+            "id": "exp_dry_cleaning_10c",
+            "title": "ХИМЧИСТКА",
+            "description_self": "Играя в футбол, ты упал на газон и испачкал белую футболку. Химчистка стоит 10¢.",
+            "description_others": "Игрок {Player} воспользовался химчисткой за 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на химчистку.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на химчистку."
+            }
+        },
+        {
+            "nr": 12,
+            "id": "exp_accessory_7c",
+            "title": "АКСЕССУАРЫ",
+            "description_self": "В магазине аксессуаров вам понравилась одна вещица, которая стоила 7¢.",
+            "description_others": "Игрок {Player} купил аксессуар за 7¢.",
+            "action": "pay",
+            "value": -7,
+            "messages": {
+                "msg_success": "Вы купили аксессуары за {Amount}¢.",
+                "msg_success_log": "{Player} купил аксессуары за {Amount}¢."
+            }
+        },
+        {
+            "nr": 13,
+            "id": "exp_headphones_5c",
+            "title": "НАУШНИКИ",
+            "description_self": "Из-за небрежного отношения у вас испортились наушники, новые стоят 5¢.",
+            "description_others": "Игрок {Player} купил новые наушники за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы купили наушники за {Amount}¢.",
+                "msg_success_log": "{Player} купил наушники за {Amount}¢."
+            }
+        },
+        {
+            "nr": 14,
+            "id": "exp_entertainment_center_10c",
+            "title": "РАЗВЛЕКАТЕЛЬНЫЙ ЦЕНТР",
+            "description_self": "Вы с друзьями решили пойти в развлекательный центр, вход стоит 10¢.",
+            "description_others": "Игрок {Player} посетил развлекательный центр за 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на развлечения.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на развлечения."
+            }
+        },
+        {
+            "nr": 15,
+            "id": "exp_treats_4c",
+            "title": "ВКУСНЯШКИ",
+            "description_self": "Проходя мимо магазина, вам захотелось вкусненького. Заплатите 4¢.",
+            "description_others": "Игрок {Player} купил вкусняшки за 4¢.",
+            "action": "pay",
+            "value": -4,
+            "messages": {
+                "msg_success": "Вы купили вкусняшки за {Amount}¢.",
+                "msg_success_log": "{Player} купил вкусняшки за {Amount}¢."
+            }
+        },
+        {
+            "nr": 16,
+            "id": "exp_bracelet_4c",
+            "title": "БРАСЛЕТ",
+            "description_self": "В интернет-магазине вам понравился один модный браслет, который стоит 4¢.",
+            "description_others": "Игрок {Player} купил браслет за 4¢.",
+            "action": "pay",
+            "value": -4,
+            "messages": {
+                "msg_success": "Вы купили браслет за {Amount}¢.",
+                "msg_success_log": "{Player} купил браслет за {Amount}¢."
+            }
+        },
+        {
+            "nr": 17,
+            "id": "exp_bday_gift_3c",
+            "title": "ДЕНЬ РОЖДЕНИЕ ОДНОКЛАССНИКА",
+            "description_self": "Сегодня день рождения у вашего одноклассника, все собирают на подарок по 3¢.",
+            "description_others": "Игрок {Player} скинулся на подарок однокласснику 3¢.",
+            "action": "pay",
+            "value": -3,
+            "messages": {
+                "msg_success": "Вы сдали {Amount}¢ на подарок.",
+                "msg_success_log": "{Player} сдал {Amount}¢ на подарок."
+            }
+        },
+        {
+            "nr": 18,
+            "id": "exp_computer_game_10c",
+            "title": "КОМПЬЮТЕРНАЯ ИГРА",
+            "description_self": "Вы зашли в магазин компьютерной техники, и купили новую компьютерную игру за 10¢.",
+            "description_others": "Игрок {Player} купил компьютерную игру за 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы купили компьютерную игру за {Amount}¢.",
+                "msg_success_log": "{Player} купил компьютерную игру за {Amount}¢."
+            }
+        },
+        {
+            "nr": 19,
+            "id": "exp_computer_club_3c",
+            "title": "КОМПЬЮТЕРНЫЙ КЛУБ",
+            "description_self": "После школы вам захотелось немного поиграть за компьютером, вы потратили 3¢.",
+            "description_others": "Игрок {Player} потратил 3¢ в компьютерном клубе.",
+            "action": "pay",
+            "value": -3,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в компьютерном клубе.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в компьютерном клубе."
+            }
+        },
+        {
+            "nr": 20,
+            "id": "exp_pants_15c",
+            "title": "БРЮКИ",
+            "description_self": "Ты пытался прокатиться и нечаянно порвал новые брюки. Новые стоят 15¢.",
+            "description_others": "Игрок {Player} порвал и купил новые брюки за 15¢.",
+            "action": "pay",
+            "value": -15,
+            "messages": {
+                "msg_success": "Вы купили новые брюки за {Amount}¢.",
+                "msg_success_log": "{Player} купил новые брюки за {Amount}¢."
+            }
+        },
+        {
+            "nr": 21,
+            "id": "exp_pencil_case_5c",
+            "title": "ПЕНАЛ",
+            "description_self": "В общественном транспорте ты потерял пенал с ручками и карандашами. Новый пенал стоит 5¢.",
+            "description_others": "Игрок {Player} купил новый пенал за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы купили пенал за {Amount}¢.",
+                "msg_success_log": "{Player} купил пенал за {Amount}¢."
+            }
+        },
+        {
+            "nr": "22, 1",
+            "id": "exp_donation_2c",
+            "title": "ПОЖЕРТВОВАНИЕ",
+            "description_self": "Вы увидели бездомного человека, и захотели ему помочь. Дать ему 2¢?",
+            "description_others": "Игрок {Player} сделал пожертвование 2¢.",
+            "action": "charity_choice",
+            "value": -2,
+            "is_charity_donation": true,
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы пожертвовали {Amount}¢.",
+                "msg_success_log": "{Player} сделал пожертвование {Amount}¢.",
+                "msg_decline": "Вы отказались помочь.",
+                "msg_decline_log": "{Player} отказался помочь."
+            }
+        },
+        {
+            "nr": 23,
+            "id": "exp_stationery_4c",
+            "title": "КАНЦЕЛЯРСКИЕ ТОВАРЫ",
+            "description_self": "Вам срочно нужны некоторые канцелярские принадлежности на сумму 4¢.",
+            "description_others": "Игрок {Player} купил канцелярские принадлежности на сумму 4¢.",
+            "action": "pay",
+            "value": -4,
+            "messages": {
+                "msg_success": "Вы купили канцелярию за {Amount}¢.",
+                "msg_success_log": "{Player} купил канцелярию за {Amount}¢."
+            }
+        },
+        {
+            "nr": 24,
+            "id": "exp_zoo_5c",
+            "title": "ЗООПАРК",
+            "description_self": "После занятий вы с друзьями пошли в зоопарк, потратили там 5¢.",
+            "description_others": "Игрок {Player} посетил зоопарк за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в зоопарке.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в зоопарке."
+            }
+        },
+        {
+            "nr": 25,
+            "id": "exp_entertainment_center_5c",
+            "title": "РАЗВЛЕКАТЕЛЬНЫЙ ЦЕНТР",
+            "description_self": "Вы с друзьями решили пойти в развлекательный центр, вход стоит 5¢.",
+            "description_others": "Игрок {Player} посетил развлекательный центр за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ на развлечения.",
+                "msg_success_log": "{Player} потратил {Amount}¢ на развлечения."
+            }
+        },
+        {
+            "nr": "26, 1",
+            "id": "exp_donation_3c",
+            "title": "ПОЖЕРТВОВАНИЕ",
+            "description_self": "Вы увидели бездомного человека, и захотели ему помочь. Дать ему 3¢?",
+            "description_others": "Игрок {Player} может сделать пожертвование 3¢.",
+            "action": "charity_choice",
+            "value": -3,
+            "is_charity_donation": true,
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы пожертвовали {Amount}¢.",
+                "msg_success_log": "{Player} сделал пожертвование {Amount}¢.",
+                "msg_decline": "Вы отказались помочь.",
+                "msg_decline_log": "{Player} отказался помочь."
+            }
+        },
+        {
+            "nr": "27, 1",
+            "id": "exp_courses_english_60c",
+            "title": "КУРСЫ",
+            "description_self": "Предлагаем пройти курсы английского языка. Вы научитесь переводить документы. Стоимость: 60¢.",
+            "description_others": "Игрок {Player} получил предложение пройти курсы английского языка за 60¢.",
+            "action": "buy_business",
+            "price": 60,
+            "income": 0,
+            "name": "Курсы английского",
+            "skill": "translator_english",
+            "requires_action": true,
+            "messages": {
+                "msg_success": "Вы прошли курсы английского! Стоимость: {Amount}¢.",
+                "msg_success_log": "{Player} прошел курсы английского.",
+                "msg_fail": "Недостаточно средств.",
+                "msg_decline": "Вы отказались от курсов.",
+                "msg_decline_log": "{Player} отказался от курсов."
+            }
+        },
+        {
+            "nr": 28,
+            "id": "exp_stationery_3c",
+            "title": "КАНЦЕЛЯРСКИЕ ТОВАРЫ",
+            "description_self": "Вам срочно нужны некоторые канцелярские принадлежности на сумму 3¢.",
+            "description_others": "Игрок {Player} купил канцелярские принадлежности на сумму 3¢.",
+            "action": "pay",
+            "value": -3,
+            "messages": {
+                "msg_success": "Вы купили канцелярию за {Amount}¢.",
+                "msg_success_log": "{Player} купил канцелярию за {Amount}¢."
+            }
+        },
+        {
+            "nr": 29,
+            "id": "exp_ball_10c",
+            "title": "МЯЧ",
+            "description_self": "Играя во дворе, вы случайно испортили мяч соседа, вам придётся возместить ущерб. Заплатите 10¢.",
+            "description_others": "Игрок {Player} возместил ущерб за мяч соседа 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы возместили ущерб за мяч ({Amount}¢).",
+                "msg_success_log": "{Player} возместил ущерб за мяч ({Amount}¢)."
+            }
+        },
+        {
+            "nr": 30,
+            "id": "exp_toy_7c",
+            "title": "ИГРУШКА",
+            "description_self": "Гуляя по торговому центру вы увидели классную игрушку, которая стоит 7¢.",
+            "description_others": "Игрок {Player} купил игрушку за 7¢.",
+            "action": "pay",
+            "value": -7,
+            "messages": {
+                "msg_success": "Вы купили игрушку за {Amount}¢.",
+                "msg_success_log": "{Player} купил игрушку за {Amount}¢."
+            }
+        },
+        {
+            "nr": 31,
+            "id": "exp_zoo_6c",
+            "title": "ЗООПАРК",
+            "description_self": "После занятий вы с друзьями пошли в зоопарк, потратили там 6¢.",
+            "description_others": "Игрок {Player} посетил зоопарк за 6¢.",
+            "action": "pay",
+            "value": -6,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в зоопарке.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в зоопарке."
+            }
+        },
+        {
+            "nr": 32,
+            "id": "exp_cinema_7c",
+            "title": "КИНОТЕАТР",
+            "description_self": "Вы с друзьями решили сходить в кинотеатр. Потратили 7¢.",
+            "description_others": "Игрок {Player} сходил в кинотеатр за 7¢.",
+            "action": "pay",
+            "value": -7,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в кино.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в кино."
+            }
+        },
+        {
+            "nr": 33,
+            "id": "exp_pizzeria_5c",
+            "title": "ПИЦЦЕРИЯ",
+            "description_self": "Вы с одноклассниками после уроков решили зайти в пиццерию, вы потратили 5¢.",
+            "description_others": "Игрок {Player} потратил 5¢ в пиццерии.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в пиццерии.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в пиццерии."
+            }
+        },
+        {
+            "nr": 34,
+            "id": "exp_toy_5c",
+            "title": "ИГРУШКА",
+            "description_self": "Гуляя по торговому центру вы увидели классную игрушку, которая стоит 5¢.",
+            "description_others": "Игрок {Player} купил игрушку за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы купили игрушку за {Amount}¢.",
+                "msg_success_log": "{Player} купил игрушку за {Amount}¢."
+            }
+        },
+        {
+            "nr": 35,
+            "id": "exp_lend_8c",
+            "title": "ПОПОРОСИЛИ В ДОЛГ",
+            "description_self": "У вашего друга возникли проблемы, он просит вас одолжить немного денег. Одолжите 8¢.",
+            "description_others": "Игрок {Player} одолжил 8¢.",
+            "action": "lend",
+            "value": -8,
+            "messages": {
+                "msg_success": "Вы одолжили {Amount}¢.",
+                "msg_success_log": "{Player} одолжил {Amount}¢."
+            }
+        },
+        {
+            "nr": 36,
+            "id": "exp_accessory_8c",
+            "title": "АКСЕССУАРЫ",
+            "description_self": "В магазине аксессуаров вам понравилась одна вещица, которая стоила 8¢.",
+            "description_others": "Игрок {Player} купил аксессуар за 8¢.",
+            "action": "pay",
+            "value": -8,
+            "messages": {
+                "msg_success": "Вы купили аксессуары за {Amount}¢.",
+                "msg_success_log": "{Player} купил аксессуары за {Amount}¢."
+            }
+        },
+        {
+            "nr": 37,
+            "id": "exp_computer_club_2c",
+            "title": "КОМПЬЮТЕРНЫЙ КЛУБ",
+            "description_self": "После школы вам захотелось немного поиграть за компьютером, вы потратили 2¢.",
+            "description_others": "Игрок {Player} потратил 2¢ в компьютерном клубе.",
+            "action": "pay",
+            "value": -2,
+            "messages": {
+                "msg_success": "Вы потратили {Amount}¢ в компьютерном клубе.",
+                "msg_success_log": "{Player} потратил {Amount}¢ в компьютерном клубе."
+            }
+        },
+        {
+            "nr": 38,
+            "id": "exp_lend_5c",
+            "title": "ПОПОРОСИЛИ В ДОЛГ",
+            "description_self": "У вашего друга возникли проблемы, он просит вас одолжить немного денег. Одолжите 5¢.",
+            "description_others": "Игрок {Player} одолжил 5¢.",
+            "action": "lend",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы одолжили {Amount}¢.",
+                "msg_success_log": "{Player} одолжил {Amount}¢."
+            }
+        },
+        {
+            "nr": 39,
+            "id": "exp_phone_repair_10c",
+            "title": "ТЕЛЕФОН",
+            "description_self": "Ваш телефон начал зависать, мастер починит его за 10¢.",
+            "description_others": "Игрок {Player} починил телефон за 10¢.",
+            "action": "pay",
+            "value": -10,
+            "messages": {
+                "msg_success": "Вы починили телефон за {Amount}¢.",
+                "msg_success_log": "{Player} починил телефон за {Amount}¢."
+            }
+        },
+        {
+            "nr": 40,
+            "id": "exp_treats_5c",
+            "title": "ВКУСНЯШКИ",
+            "description_self": "Проходя мимо магазина, вам захотелось вкусненького. Заплатите 5¢.",
+            "description_others": "Игрок {Player} купил вкусняшки за 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы купили вкусняшки за {Amount}¢.",
+                "msg_success_log": "{Player} купил вкусняшки за {Amount}¢."
+            }
+        },
+        {
+            "nr": 41,
+            "id": "exp_bday_gift_5c",
+            "title": "ДЕНЬ РОЖДЕНИЕ ОДНОКЛАССНИКА",
+            "description_self": "Сегодня день рождения у вашего одноклассника, все собирают на подарок по 5¢.",
+            "description_others": "Игрок {Player} скинулся на подарок однокласснику 5¢.",
+            "action": "pay",
+            "value": -5,
+            "messages": {
+                "msg_success": "Вы сдали {Amount}¢ на подарок.",
+                "msg_success_log": "{Player} сдал {Amount}¢ на подарок."
+            }
+        }
+    ]
+}
