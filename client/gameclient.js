@@ -8,22 +8,22 @@
 const getSocketUrl = () => {
     const protocol = window.location.protocol;
     const hostname = window.location.hostname;
+    const port = window.location.port;
 
     // 1. Filesystem (file://) -> assume localhost:8080
     if (protocol === 'file:') {
         return 'http://localhost:8080';
     }
 
-    // 2. If served via HTTP/HTTPS (e.g., Live Server port 5500 or real server 8080)
-    // We assume the BACKEND is always on port 8080 relative to the hostname.
-    // This allows:
-    // - localhost:5500 -> localhost:8080
-    // - 192.168.1.5:5500 -> 192.168.1.5:8080 (Mobile)
-    if (hostname) {
+    // 2. Если мы на Live Server (обычно порт 5500) или другом порту, 
+    // но бекенд ожидается на 8080
+    if (port && port !== '8080' && (hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.'))) {
         return `${protocol}//${hostname}:8080`;
     }
 
-    return 'http://localhost:8080';
+    // 3. В остальных случаях (Render, или если открыто прямо по порту 8080)
+    // используем текущий домен/порт
+    return window.location.origin;
 };
 
 const socket = io(getSocketUrl());
@@ -1719,3 +1719,4 @@ function showSpeechBubble(playerId, text) {
         setTimeout(() => bubble.remove(), 500); // Wait for animation
     }, 4500);
 }
+
