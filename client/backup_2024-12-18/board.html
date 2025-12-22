@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full HD Board Game</title>
+    <!-- Socket.IO клиент -->
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <!-- Подключаем CSS файлы -->
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="curator.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link rel="stylesheet" href="board.css">
+    <link rel="stylesheet" href="deckanimation.css">
+    <link rel="stylesheet" href="diceanimation.css">
+    <link rel="stylesheet" href="cellposition.css">
+    <link rel="stylesheet" href="diceanimation.css">
+    <link rel="stylesheet" href="playeranimation.css">
+    <link rel="stylesheet" href="coinanimation.css">
+    <link rel="stylesheet" href="choice_styles.css">
+    <link rel="stylesheet" href="finance_card.css">
+</head>
+<body>
+    
+
+    <!-- Модальное окно ВХОДА куратора -->
+    <div id="curator-auth-modal" class="auth-modal hidden">
+        <div class="auth-content curator-auth-content">
+            <h1 class="auth-title">Вход для Куратора</h1>
+            <div class="auth-error" id="curator-auth-error"></div>
+            
+            <!-- Имя куратора скрыто/фиксировано -->
+
+            
+            <div class="auth-input-group">
+                <label class="auth-label">Пароль куратора:</label>
+                <input type="password" id="curator-password" class="auth-input" placeholder="Введите пароль">
+            </div>
+            
+            <button id="curator-login-btn" class="auth-button curator-btn">Войти</button>
+            <button id="curator-cancel-btn" class="auth-button secondary-btn" style="margin-top: 10px;">Отмена</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно ПАНЕЛИ куратора -->
+    <div id="curator-panel-modal" class="auth-modal hidden">
+        <div class="auth-content curator-panel-content">
+            <div class="panel-header">
+                <h1 class="auth-title">Панель Управления</h1>
+                <div id="curator-panel-close" class="panel-close">×</div>
+            </div>
+            
+            <div class="panel-status" id="game-status-display">Статус: Ожидание</div>
+            
+            <div class="panel-actions">
+                <button id="end-game-btn" class="auth-button end-game-btn hidden">🏁 Завершить игру</button>
+            </div>
+            
+            <div class="players-list-container">
+                <h3>Игроки в сети:</h3>
+                <ul id="curator-players-list"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно авторизации игрока -->
+    <div id="auth-modal" class="auth-modal">
+        <div class="auth-content">
+            <h1 class="auth-title">🐜 Я и деньги</h1>
+            <p class="auth-subtitle">Добро пожаловать в игру!</p>
+            
+            <div class="auth-error" id="auth-error"></div>
+            
+            <div class="auth-input-group">
+                <label class="auth-label" for="player-name">Ваше имя:</label>
+                <input 
+                    type="text" 
+                    id="player-name" 
+                    class="auth-input" 
+                    placeholder="Введите имя"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <div class="auth-input-group">
+                <label class="auth-label" for="player-password">Пароль игры:</label>
+                <input 
+                    type="password" 
+                    id="player-password" 
+                    class="auth-input" 
+                    placeholder="Введите пароль"
+                    autocomplete="off"
+                >
+            </div>
+            
+            <button id="auth-btn" class="auth-button">Войти в игру</button>
+            
+            <div class="auth-info">
+                Попросите пароль у куратора
+            </div>
+        </div>
+    </div>
+    <!-- Основной чат (ТОЛЬКО ПРОСМОТР) -->
+    <div id="chat-panel">
+        <div id="chat-collapse-btn" title="Свернуть">--</div>
+        <div class="chat-header">📜 История и Чат</div>
+        <div id="chat-container">
+            <div class="chat-messages" id="main-chat-messages">
+                <div class="chat-message message-system">Игра готова к началу!</div>
+            </div>
+            <!-- Строка ввода удалена, только просмотр -->
+        </div>
+    </div>
+
+    <!-- Панель ввода (ТОЛЬКО ВВОД) -->
+    <div id="players-chat-panel">
+        <div id="players-chat-collapse-btn" title="Свернуть">--</div>
+        <div class="chat-header">💬 Написать</div>
+        <div id="players-chat-container">
+            <div class="chat-input-area single-input-mode">
+                <input type="text" id="players-chat-input" placeholder="Введите сообщение..." maxlength="500">
+                <button id="players-chat-send">➤</button>
+            </div>
+        </div>
+    </div>
+                        <!-- МОДАЛКА ФИНАНСОВОЙ КАРТОЧКИ (НОВЫЙ ДИЗАЙН) -->
+            <div id="finance-modal" class="finance-modal">
+                <div class="finance-dashboard">
+                    <!-- Header -->
+                    <div class="fin-header">
+                        <div class="fin-player-info">
+                            <div class="fin-avatar">
+                                <img src="muravei/ant.png" alt="Avatar">
+                            </div>
+                            <div class="fin-player-details">
+                                <h2 id="fin-player-name">Игрок</h2>
+                                <div class="fin-player-sub">
+                                    <span class="fin-tag">ONLINE</span>
+                                    <span id="fin-player-role">CEO</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fin-header-controls">
+                            <button id="btn-show-history" class="fin-control-btn">📜 История</button>
+                            <button id="btn-toggle-actual" class="fin-control-btn">✅ Фактическая</button>
+                        </div>
+
+                        <button id="finance-close" class="fin-close-btn" title="Закрыть">×</button>
+                    </div>
+
+                    <!-- === МОДАЛКА СЕРВЕРНЫХ ДАННЫХ (внутри основной) === -->
+                    <div id="server-data-modal" class="server-data-modal" style="display: none;">
+                        <div class="server-modal-content">
+                            <div class="server-modal-header">
+                                <h3>📡 Данные сервера</h3>
+                                <button id="server-modal-close" class="fin-close-btn" title="Закрыть">×</button>
+                            </div>
+                            
+                            <!-- Копилки -->
+                            <div class="server-wallets-grid">
+                                <div class="server-wallet">
+                                    <span class="sw-icon">❤️</span>
+                                    <span class="sw-label">Благотворительность</span>
+                                    <span class="sw-value" id="srv-wallet-charity">0</span>
+                                </div>
+                                <div class="server-wallet">
+                                    <span class="sw-icon">⭐</span>
+                                    <span class="sw-label">Мечта</span>
+                                    <span class="sw-value" id="srv-wallet-dream">0</span>
+                                </div>
+                                <div class="server-wallet">
+                                    <span class="sw-icon">🛡️</span>
+                                    <span class="sw-label">Сбережения</span>
+                                    <span class="sw-value" id="srv-wallet-savings">100</span>
+                                </div>
+                                <div class="server-wallet">
+                                    <span class="sw-icon">📈</span>
+                                    <span class="sw-label">Инвестиции</span>
+                                    <span class="sw-value" id="srv-wallet-invest">0</span>
+                                </div>
+                            </div>
+
+                            <!-- Доходы и Расходы -->
+                            <div class="server-flow-grid">
+                                <div class="server-flow income">
+                                    <div class="sf-header">💰 Доходы</div>
+                                    <div class="sf-list" id="srv-income-list">
+                                        <div class="sf-empty">Нет данных</div>
+                                    </div>
+                                    <div class="sf-total">Итого: <span id="srv-income-total">0</span> ₸</div>
+                                </div>
+                                <div class="server-flow expense">
+                                    <div class="sf-header">💸 Расходы</div>
+                                    <div class="sf-list" id="srv-expense-list">
+                                        <div class="sf-empty">Нет данных</div>
+                                    </div>
+                                    <div class="sf-total">Итого: <span id="srv-expense-total">0</span> ₸</div>
+                                </div>
+                            </div>
+
+                            <!-- Баланс -->
+                            <div class="srv-balance-row" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; font-weight: bold; padding: 12px; border-radius: 8px; margin-top: 10px; text-align: center;">
+                                📊 Баланс сервера: <span id="srv-total-balance">100</span> ₸
+                            </div>
+
+                            <!-- Кнопка автозаполнения -->
+                            <button id="btn-autofill-turn" class="autofill-btn" style="
+                                width: 100%;
+                                margin-top: 10px;
+                                padding: 12px;
+                                background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+                                color: white;
+                                border: none;
+                                border-radius: 8px;
+                                font-size: 14px;
+                                font-weight: bold;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                            ">
+                                ⚡ Автозаполнение текущего хода
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Main Grid -->
+                    <div class="fin-body">
+                        <!-- Left: Dream & Target -->
+                        <div class="fin-section-dream">
+                            <h3 class="fin-section-subtitle">Моя Цель</h3>
+                            
+                            <div class="fin-dream-card">
+                                <img src="cell-icon/computer.png" class="fin-dream-bg" id="fin-dream-img">
+                                <div class="fin-dream-overlay">
+                                    <select id="fin-dream-select" class="fin-dream-select">
+                                        <option value="" disabled selected>-- Выберите Мечту --</option>
+                                        <option value="computer" data-price="600">Компьютер (600 ₸)</option>
+                                        <option value="bicycle" data-price="600">Велосипед (600 ₸)</option>
+                                        <option value="smartphone" data-price="500">Смартфон (500 ₸)</option>
+                                        <option value="scooter" data-price="600">Самокат (600 ₸)</option>
+                                        <option value="disney" data-price="1000">Диснейленд (1000 ₸)</option>
+                                    </select>
+                                    <div class="fin-dream-price" id="fin-dream-price">... ₸</div>
+                                    <div id="fin-dream-status" class="fin-dream-status" style="display: none;">✅ ВЫБРАНО</div>
+                                    
+                                    <!-- Custom Confirm Modal inside the card -->
+                                    <div id="dream-confirm-modal" class="dream-confirm-modal" style="display: none;">
+                                        <div class="dream-confirm-content">
+                                            <h4>Подтвердите выбор</h4>
+                                            <p>Вы точно хотите выбрать <span id="dream-confirm-name" style="color:var(--fin-accent-green); font-weight:bold;">...</span>?</p>
+                                            <div class="dream-confirm-buttons">
+                                                <button id="dream-confirm-yes" class="fin-btn-confirm">Да, беру!</button>
+                                                <button id="dream-confirm-no" class="fin-btn-cancel">Отмена</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="fin-dream-progress-container">
+                                <svg viewBox="0 0 36 36" class="circular-chart">
+                                    <path class="circle-bg"
+                                      d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <path class="circle" id="fin-dream-circle"
+                                      stroke-dasharray="0, 100"
+                                      d="M18 2.0845
+                                        a 15.9155 15.9155 0 0 1 0 31.831
+                                        a 15.9155 15.9155 0 0 1 0 -31.831"
+                                    />
+                                    <text x="18" y="20.35" class="percentage" id="fin-dream-percent">0%</text>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <!-- Center: Wallets & Flow -->
+                        <div class="fin-section-center">
+                            <!-- Wallets Grid -->
+                            <h3 class="fin-section-subtitle">Мои Кошельки</h3>
+                            <div class="fin-wallets-grid">
+                                
+                                <!-- Wallet 1: Charity -->
+                                <div class="fin-wallet-card wallet-charity">
+                                    <div class="fin-wallet-header">
+                                        <span class="fin-wallet-icon">❤️</span> Благотворительность
+                                    </div>
+                                    <div class="fin-wallet-input-container">
+                                        <input type="number" class="fin-wallet-input" value="0" id="wallet-charity-input">
+                                        <span class="fin-currency">₸</span>
+                                    </div>
+                                    <div class="fin-progress-bar">
+                                        <div class="fin-progress-fill" style="width: 10%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Wallet 2: Dream -->
+                                <div class="fin-wallet-card wallet-dream">
+                                    <div class="fin-wallet-header">
+                                        <span class="fin-wallet-icon">⭐</span> Мечта
+                                    </div>
+                                    <div class="fin-wallet-input-container">
+                                        <input type="number" class="fin-wallet-input" value="0" id="wallet-dream-input">
+                                        <span class="fin-currency">₸</span>
+                                    </div>
+                                    <div class="fin-progress-bar">
+                                        <div class="fin-progress-fill" style="width: 25%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Wallet 3: Savings/Reserve -->
+                                <div class="fin-wallet-card wallet-savings">
+                                    <div class="fin-wallet-header">
+                                        <span class="fin-wallet-icon">🛡️</span> Сбережения
+                                    </div>
+                                    <div class="fin-wallet-input-container">
+                                        <input type="number" class="fin-wallet-input" value="100" id="wallet-savings-input">
+                                        <span class="fin-currency">₸</span>
+                                    </div>
+                                    <div class="fin-progress-bar">
+                                        <div class="fin-progress-fill" style="width: 50%"></div>
+                                    </div>
+                                </div>
+
+                                <!-- Wallet 4: Investments -->
+                                <div class="fin-wallet-card wallet-invest">
+                                    <div class="fin-wallet-header">
+                                        <span class="fin-wallet-icon">📈</span> Инвестиции
+                                    </div>
+                                    <div class="fin-wallet-input-container">
+                                        <input type="number" class="fin-wallet-input" value="0" id="wallet-invest-input">
+                                        <span class="fin-currency">₸</span>
+                                    </div>
+                                    <div class="fin-progress-bar">
+                                        <div class="fin-progress-fill" style="width: 5%"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- Cash Flow -->
+                            <h3 class="fin-section-subtitle">Денежный Поток (Месяц)</h3>
+                            <div class="fin-cashflow-container">
+                                
+                                <div class="fin-flow-column">
+                                    <div class="fin-flow-header">
+                                        <span class="fin-flow-title text-green">ДОХОДЫ</span>
+                                        <span class="fin-flow-total text-green" id="fin-income-total">+0 ₸</span>
+                                    </div>
+                                    <div class="fin-flow-list" id="fin-income-list">
+                                        <!-- Записи добавляются динамически -->
+                                    </div>
+                                    <button class="fin-add-btn" id="btn-add-income">+ Добавить доход</button>
+                                </div>
+
+                                <div class="fin-flow-column">
+                                    <div class="fin-flow-header">
+                                        <span class="fin-flow-title text-red">РАСХОДЫ</span>
+                                        <span class="fin-flow-total text-red" id="fin-expense-total">-0 ₸</span>
+                                    </div>
+                                    <div class="fin-flow-list" id="fin-expense-list">
+                                        <!-- Записи добавляются динамически -->
+                                    </div>
+                                    <button class="fin-add-btn" id="btn-add-expense">+ Добавить расход</button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Right: Assets & History -->
+                        <div class="fin-section-right">
+                            
+                            <!-- Assets -->
+                            <div>
+                                <h3 class="fin-section-subtitle">Активы / Бизнесы</h3>
+                                <div class="fin-assets-list" id="fin-assets-list">
+                                    <div class="fin-asset-item">
+                                        <div class="fin-asset-info">
+                                            <h4>Нет активов</h4>
+                                            <span>Купите бизнес!</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Skills -->
+                            <div>
+                                <h3 class="fin-section-subtitle">Навыки</h3>
+                                <div class="fin-assets-list" id="fin-skills-list">
+                                    <div class="fin-asset-item" style="border-color: var(--fin-accent-purple)">
+                                        <div class="fin-asset-icon">🎓</div>
+                                        <div class="fin-asset-info">
+                                            <h4>Нет навыков</h4>
+                                            <span>Изучайте!</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Small Graph -->
+                            <div style="flex: 1; display: flex; flex-direction: column;">
+                                <h3 class="fin-section-subtitle">Рост Капитала</h3>
+                                <div class="fin-graph-placeholder">
+                                    <div class="simple-chart">
+                                        <div class="chart-bar" style="height: 20px;" title="100 ₸"></div>
+                                    </div>
+                                    <span style="font-size: 10px;">Начало игры</span>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Footer -->
+                    <div class="fin-footer">
+                        <button id="btn-confirm-card" class="fin-confirm-btn">✅ Подтвердить карточку</button>
+                        <div class="fin-total-balance">Общий Баланс: 100 ₸</div>
+                    </div>
+                </div>
+            </div>
+            <!-- МОДАЛКА ИСТОРИИ (History Modal) -->
+            <div id="history-modal" class="finance-modal" style="z-index: 10002;">
+                <div class="finance-dashboard" style="height: 80%; max-width: 800px;">
+                    <div class="fin-header">
+                        <h2 style="font-size: 20px;">📜 История Игры</h2>
+                        <button id="history-close" class="fin-close-btn">×</button>
+                    </div>
+                    <div class="fin-body" style="display: block; overflow-y: auto; padding: 20px;">
+                        <table class="fin-history-table">
+                            <thead>
+                                <tr>
+                                    <th>№</th>
+                                    <th>Кубик</th>
+                                    <th>Клетка</th>
+                                    <th>Карточка</th>
+                                    <th>Результат</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-list-body">
+                                <!-- История заполняется автоматически -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+    <!-- Контейнер игры -->
+    <div class="game-container" id="gameContainer">
+        <div id="fullhd">
+            <!-- Панель управления (единый стиль) -->
+            <div class="control-panel">
+                <!-- Кнопка финансовой карточки - только иконка -->
+                <button id="financecard1" class="control-btn finance-card-trigger finance-icon-only" title="Моя финансовая карточка (F)">
+                    <span class="btn-icon">📊</span>
+                </button>
+
+                <!-- Кнопка куратора -->
+                <button id="curator-btn-trigger" class="control-btn" title="Панель куратора">
+                    <span class="btn-icon">👑</span>
+                    <span class="btn-label">Куратор</span>
+                </button>
+
+                <!-- Кнопка начать/завершить игру -->
+                <button id="start-game-btn" class="control-btn" title="Начать/Завершить игру">
+                    <span class="btn-icon">🚀</span>
+                    <span class="btn-label">Ожидание</span>
+                </button>
+
+                <!-- Панель масштаба (без иконок, как кнопки) -->
+                <div class="scale-controls">
+                    <button onclick="scaleGame(0.5)">50%</button>
+                    <button onclick="scaleGame(0.7)">70%</button>
+                    <button onclick="scaleGame(0.8)">80%</button>
+                    <button onclick="scaleGame(1)">100%</button>
+                </div>
+            </div>
+
+            <!-- COIN FLIP UI -->
+            <div class="coin-container">
+                <div class="coin">
+                    <div class="coin-face heads">ОРЕЛ</div>
+                    <div class="coin-face tails">РЕШКА</div>
+                </div>
+                <div class="coin-result-label">РЕЗУЛЬТАТ</div>
+            </div>
+
+            <div class="coin-button-container">
+                <button class="coin-btn" title="Подбросить монетку">🪙</button>
+            </div>
+            <!-- Игровое поле -->
+            <div class="board">
+                <div class="cell cell-55">
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>
+                    <div class="cell-text">Шанс</div>
+                </div>
+                <div class="cell cell-54">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>
+                </div>
+                <div class="cell cell-53">
+                    <div class="cell-text">Детский</div>
+                    <div class="cell-textdown">бизнес</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/business.png');"></div>
+                </div>
+                <div class="cell cell-start">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-1">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>
+                </div>
+                <div class="cell cell-2">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-3">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-4">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">600С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/computer.png');"></div>                
+                </div>
+                <div class="cell cell-5">
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>
+                    <div class="cell-text">Расходы</div>                
+                </div>
+                <div class="cell cell-6">
+                    <div class="cell-text">Детский</div>
+                    <div class="cell-textdown">бизнес</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/business.png');"></div>                
+                </div>
+                <div class="cell cell-7">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-8">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-fork1">
+                    <div class="cell-text">Развилка</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/fork.png');"></div>                
+                </div>
+                <div class="cell cell-9">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-10">
+                    <div class="cell-text">Детский</div> 
+                    <div class="cell-textdown">бизнес</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/business.png');"></div>               
+                </div>
+                <div class="cell cell-11">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-12">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-13">
+                    <div class="cell-text">Директор</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/director.png');"></div>                
+                </div>
+                <div class="cell cell-14">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-15">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-16">
+                <div class="cell-text">Шанс</div>
+                <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-17">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-18">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">600С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/bicycle.png');"></div>                 
+                </div>
+                <div class="cell cell-fork">
+                    <div class="cell-text">Развилка</div> 
+                    <div class="cell-icon" style="background-image: url('cell-icon/fork.png');"></div>               
+                </div>
+                <div class="cell cell-19">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-20">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-21">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-22">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-23">
+                    <div class="cell-text">Детский</div>
+                    <div class="cell-textdown">бизнес</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/business.png');"></div>                 
+                </div>
+                <div class="cell cell-24">
+                    <div class="cell-text">Драка</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/fight.png');"></div>                
+                </div>
+                <div class="cell cell-25">
+                    <div class="cell-text">Хулиганы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/gangsters.png');"></div>                
+                </div>
+                <div class="cell cell-26">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-27">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-28">
+                    <div class="cell-text">Большие</div>
+                    <div class="cell-textdown">проблемы</div> 
+                    <div class="cell-icon" style="background-image: url('cell-icon/bigproblem.png');"></div>                
+                </div>
+                <div class="cell cell-29">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">500С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/smartphone.png');"></div>                 
+                </div>
+                <div class="cell cell-30">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-31">
+                    <div class="cell-text">Драка</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/fight.png');"></div>                
+                </div>
+                <div class="cell cell-32">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-33">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>   
+                <div class="cell cell-34">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">600С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/computer.png');"></div>                 
+                </div>
+                <div class="cell cell-35">
+                    <div class="cell-text">Хулиганы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/gangsters.png');"></div>                
+                </div>
+                <div class="cell cell-36">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>
+                </div>
+                <div class="cell cell-37">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-38">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-39">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-40">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+                <div class="cell cell-41">
+                    <div class="cell-text">Благотво-</div>
+                    <div class="cell-textdown">рительность</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/charity.png');"></div>                 
+                </div>
+                <div class="cell cell-42">
+                    <div class="cell-text">Детский</div>
+                    <div class="cell-textdown">бизнес</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/business.png');"></div>                 
+                </div>
+                <div class="cell cell-43">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div> 
+                <div class="cell cell-44">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-45">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">600С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/scooter.png');"></div>                 
+                </div>
+                <div class="cell cell-46">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-47">
+                    <div class="cell-text">Расходы</div> 
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>               
+                </div>
+                <div class="cell cell-48">
+                    <div class="cell-text">Шанс</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/chance.png');"></div>                
+                </div>
+                <div class="cell cell-49">
+                    <div class="cell-text">Новости</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/news.png');"></div>                
+                </div>
+                <div class="cell cell-50">
+                    <div class="cell-text">Мечта</div>
+                    <div class="cell-textdown">1000С</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/disney.png');"></div>                 
+                </div>
+                <div class="cell cell-51">
+                    <div class="cell-text">Деньги</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/money.png');"></div>                
+                </div>
+                <div class="cell cell-52">
+                    <div class="cell-text">Расходы</div>
+                    <div class="cell-icon" style="background-image: url('cell-icon/expenses.png');"></div>                
+                </div>
+            </div>
+            <!-- Текст карточек -->
+            <div class="sidebar">
+                <div class="sidebar-inner">
+                  <!-- контент -->
+                </div>
+            </div>
+
+
+
+
+            <!-- КОЛОДЫ И КАРТА -->
+            <!-- МОДАЛКА ИСТОРИИ (History Modal) -->
+
+
+            <div id="app" class="card-container">
+            <!-- 4 колоды -->
+            <div class="deck" data-deck="1" id="deck1">
+                <img src="muravei/deckrashody.png" alt="Deck 1" />
+            </div>
+            <div class="deck" data-deck="2" id="deck2">
+                <img src="muravei/deckbusiness.png" alt="Deck 2" />
+            </div>
+            <div class="deck" data-deck="3" id="deck3">
+                <img src="muravei/decknews.png" alt="Deck 3" />
+            </div>
+            <div class="deck" data-deck="4" id="deck4">
+                <img src="muravei/deckchance.png" alt="Deck 4" />
+            </div>
+
+            <div class="ant" data-ant="1" id="ant1">
+                <img src="muravei/antrashody.png" alt="antrashody.png" />
+            </div>
+            <div class="ant" data-ant="2" id="ant2">
+                <img src="muravei/antkidsbusines.png" alt="antkidsbusines.png" />
+            </div>
+            <div class="ant" data-ant="3" id="ant3">
+                <img src="muravei/antnwes.png" alt="antnwes.png" />
+            </div>
+            <div class="ant" data-ant="4" id="ant4">
+                <img src="muravei/antchance.png" alt="antchance.png" />
+            </div>
+
+
+            <!-- Летающая карта (для активного игрока) -->
+            <div id="card" class="card"> 
+                <img id="cardImage" src="muravei/rubashka.png" class="card-back" alt="Card Back" />
+                
+                <!-- Динамический контент карты -->
+                <div id="card-dynamic-content" class="card-content" style="opacity: 0; transition: opacity 0.5s;">
+                    <h2 id="card-title">ЗАДАНИЕ</h2>
+                    <p id="card-text">Текст задания...</p>
+                    <div id="card-extra-info" class="card-extra"></div>
+                    <button class="closeBtn" id="card-close-btn">Закрыть</button>
+                </div>
+            </div>
+            
+            <!-- ОТДЕЛЬНОЕ ОКНО ДЛЯ НАБЛЮДАТЕЛЕЙ (не использует анимацию) -->
+            <div id="observer-card-modal" style="
+                display: none;
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                width: 320px;
+                min-height: 200px;
+                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+                border: 3px solid #ffd700;
+                border-radius: 15px;
+                padding: 20px;
+                z-index: 9999;
+                box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            ">
+                <h2 id="observer-card-title" style="color: #ffd700; text-align: center; margin: 0 0 15px 0; font-size: 20px;">КАРТОЧКА</h2>
+                <p id="observer-card-text" style="color: #fff; text-align: center; font-size: 16px; line-height: 1.5;"></p>
+                <div id="observer-card-extra" style="color: #aaa; text-align: center; font-size: 14px; margin-top: 10px;"></div>
+                <div id="observer-card-player" style="color: #ffd700; text-align: center; font-size: 14px; margin-top: 15px; font-style: italic;"></div>
+            </div>
+            
+
+
+    
+
+
+            <!-- Dice Cube -->
+    <div class="dice-cube-container">
+        <div class="dice">
+            <div class="dice-face front" data-value="1"></div>
+            <div class="dice-face back" data-value="6"></div>
+            <div class="dice-face right" data-value="2"></div>
+            <div class="dice-face left" data-value="5"></div>
+            <div class="dice-face top" data-value="3"></div>
+            <div class="dice-face bottom" data-value="4"></div>
+        </div>
+    </div>
+
+    <!-- Dice Button -->
+    <div class="dice-button-container">
+        <button class="roll-btn">
+            <img src="cell-icon/chance.png" alt="Roll">
+        </button>
+    </div>
+
+        </div>   
+          
+    </div>
+
+    <!-- Dice Result Modal -->
+    <div id="diceResultModal" class="dice-modal">
+        <div class="dice-modal-content">
+            <h2 id="diceResultText"></h2>
+            <button id="diceResultOk" class="dice-modal-btn">OK</button>
+        </div>
+    </div>
+
+    <!-- Подключаем JavaScript файлы (Сначала анимации и UI, потом логика игры) -->
+    <script src="board.js"></script>
+    <script src="deckanimation.js"></script>
+    <script src="coinanimation.js"></script>
+    <script src="diceanimation.js"></script>
+    <script src="playeranimation.js"></script>
+    
+    <!-- Основной клиент игры загружается последним -->
+    <script src="gameclient.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
