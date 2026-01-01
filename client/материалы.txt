@@ -1,0 +1,386 @@
+        // Add Event Listener for Name Click (Inspection)
+        document.querySelectorAll('.inspect-trigger').forEach(trigger => {
+            trigger.addEventListener('click', (e) => {
+                const playerId = e.currentTarget.getAttribute('data-player-id');
+                if (window.inspectPlayer) {
+                    window.inspectPlayer(playerId);
+                } else {
+                    console.error('Function inspectPlayer not found in window');
+                }
+            });
+        });
+
+        // Add Event Listener for Inspect Button
+        document.querySelectorAll('.inspect-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const playerId = e.currentTarget.getAttribute('data-player-id');
+                if (window.inspectPlayer) {
+                    window.inspectPlayer(playerId);
+                } else {
+                    console.error('Function inspectPlayer not found in window');
+                }
+            });
+        });
+    }
+
+    // Слушать обновления для панели куратора
+    socket.on('game:state_update', (state) => {
+        // Если панель открыта, обновляем её
+        if (!curatorPanelModal.classList.contains('hidden')) {
+            updateCuratorPanel(state);
+        }
+    });
+
+    // --- RESPONSIVE FIX: Reposition players on resize ---
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log('🔄 Window resized. Recalculating player positions...');
+
+
+
+board.html:1  Tracking Prevention blocked access to storage for https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css.
+board.html:1  Tracking Prevention blocked access to storage for https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css.
+board.html:8  Tracking Prevention blocked access to storage for https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css.
+ Mobile layout disabled for Desktop
+ 📱 Mobile touch handlers initialized
+board.html:865  Tracking Prevention blocked access to storage for https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css.
+ 📜 deckanimation.js loaded (Hybrid Restoration)
+ 📜 board.js: Инициализация...
+ ✅ Лисенеры на основной чат навешаны
+ ✅ Лисенеры на чат игроков навешаны
+ ✅ Лисенеры на историю навешаны
+ ✅ Лисенер на фактическую кнопку навешан
+ ✅ Лисенер на кнопку автозаполнения навешан
+ ✅ Лисенер на выбор мечты навешан
+ ✅ Финансовая карточка инициализирована
+ ✅ PlayerGame initialized (Strict Mode)
+ 🎮 Инициализация клиента игры...
+ 💬 Инициализация чата...
+ ✅ Клиент готов к подключению
+ 🔍 [ДИАГНОСТИКА КУРАТОРА]
+   curatorHideControlsBtn: НАЙДЕНА
+   curatorShowControlsBtn: НАЙДЕНА
+   startGameBtn: НАЙДЕНА
+gameclient.js:1331  Uncaught ReferenceError: endGameBtn is not defined
+(anonymous) @ gameclient.js:1331
+ 📜 board.js: Инициализация логики мечты...
+ ✅ board.js: Логика мечты инициализирована
+[NEW] Explain Console errors by using Copilot in Edge: click
+         
+         to explain an error. 
+        Learn more
+        Don't show again
+ 🔘 Auth button clicked
+ ✅ Авторизован: game
+ 🎮 Статус игры: waiting
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-start
+ Creating new figure for game at cell-start
+ Appended figure for game to #fullhd
+ 🐜 Player figure updated in PlayerGame
+ 📡 Обновление состояния игры {status: 'waiting', startedAt: null, curator: {…}, players: {…}, currentTurn: null, …}
+ 🎮 Статус игры: waiting
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-start
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ Chat collapsed: true
+ Players Panel collapsed: true
+ 👨‍💼 Куратор авторизован
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+ 🎮 Игра началась! {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ ✅ Финансовая модалка открыта
+ 🔓 Открытие карточки: Загрузка всех данных...
+ 📊 Данные финансов обновлены: {success: true, manual: {…}, auto: {…}, assets: {…}, turnHistory: Array(0), …}
+ Выбрана мечта: bicycle 600
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-start
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🎲 Запрос броска кубика...
+ 🎲 game бросил кубик: 4
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ 🔒 Decks locked: must move figure first
+ Using server prediction: cell-4
+ Move enabled. Steps: 4, Target Index: -1
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 🔒 forceHideCard called
+ 🙈 Карточка скрыта по команде сервера
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 🔓 Decks unlocked: move complete
+ 📤 Отправка хода: 4 шагов
+ 🚶 game переместился на cell-4
+ 📥 Event added to queue: {type: 'cell_event', title: 'МЕЧТА', message: 'У вас недостаточно средств для покупки Мечта компь…обы зафиксировать событие и передать ход!</small>', action: 'dream_check_fail', options: undefined, …}
+ 📺 Showing Unified Window: {type: 'cell_event', title: 'МЕЧТА', message: 'У вас недостаточно средств для покупки Мечта компь…обы зафиксировать событие и передать ход!</small>', action: 'dream_check_fail', options: undefined, …}
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🔔 Ваш ход! Кнопка броска активирована.
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-4
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🏁 Завершаем ход...
+ 🔒 forceHideCard called
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-4
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-4
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ ✅ Финансовая модалка открыта
+ 🔓 Открытие карточки: Загрузка всех данных...
+ 📊 Данные финансов обновлены: {success: true, manual: {…}, auto: {…}, assets: {…}, turnHistory: Array(1), …}
+ Manual entries saved: {success: true}
+ Wallets synced: {success: true}
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-4
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ ✅ Карточка подтверждена
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-4
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🎲 Запрос броска кубика...
+ 🎲 game бросил кубик: 5
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ 🔒 Decks locked: must move figure first
+ Using server prediction: cell-fork1
+ Move enabled. Steps: 5, Target Index: -1
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 🔒 forceHideCard called
+ 🙈 Карточка скрыта по команде сервера
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 🔓 Decks unlocked: move complete
+ 📤 Отправка хода: 5 шагов
+ 🚶 game переместился на cell-fork1
+ 📥 Event added to queue: {type: 'cell_event', title: 'Развилка', message: 'Вы на развилке! На следующем ходу вы бросите монетку, чтобы выбрать путь.', action: 'choose_path', options: undefined, …}
+ 📺 Showing Unified Window: {type: 'cell_event', title: 'Развилка', message: 'Вы на развилке! На следующем ходу вы бросите монетку, чтобы выбрать путь.', action: 'choose_path', options: undefined, …}
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🔔 Ваш ход! Кнопка броска активирована.
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-fork1
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🏁 Завершаем ход...
+ 🔒 forceHideCard called
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-fork1
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+ 🔒 Server requested close active window
+ 🔒 closeUnifiedWindow called
+ 🔒 forceHideCard called
+ 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+ 🎮 Статус игры: in_progress
+ 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+ RENDER LOOP: Processing player game on cell-fork1
+ 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+ ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:682 🪙 game бросил монетку: tails -> НАЛЕВО
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-fork1
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:1508 🎲 Запрос броска кубика...
+gameclient.js:1511  Ошибка броска: ⛔ Заполните финансовую карточку перед следующим ходом! (Нажмите "Подтвердить" в карточке)
+(anonymous) @ gameclient.js:1511
+o.onack @ socket.js:580
+o.onpacket @ socket.js:499
+I.emit @ index.js:136
+(anonymous) @ manager.js:209
+Promise.then
+R @ globals.js:4
+i.ondecoded @ manager.js:208
+I.emit @ index.js:136
+i.add @ index.js:142
+i.ondata @ manager.js:195
+I.emit @ index.js:136
+i.H @ socket.js:259
+I.emit @ index.js:136
+i.onPacket @ transport.js:99
+i.onData @ transport.js:91
+ws.onmessage @ websocket.js:48
+board.js:337 ✅ Финансовая модалка открыта
+board.js:495 🔓 Открытие карточки: Загрузка всех данных...
+board.js:510 📊 Данные финансов обновлены: {success: true, manual: {…}, auto: {…}, assets: {…}, turnHistory: Array(2), …}
+board.js:1227 Manual entries saved: {success: true}
+board.js:1238 Wallets synced: {success: true}
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-fork1
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+board.js:1252 ✅ Карточка подтверждена
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-fork1
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:1508 🎲 Запрос броска кубика...
+gameclient.js:657 🎲 game бросил кубик: 5
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+diceanimation.js:113 🔒 Decks locked: must move figure first
+playeranimation.js:85 Using server prediction: cell-17
+playeranimation.js:114 Move enabled. Steps: 5, Target Index: -1
+gameclient.js:893 🔒 closeUnifiedWindow called
+deckanimation.js:205 🔒 forceHideCard called
+deckanimation.js:205 🔒 forceHideCard called
+gameclient.js:1659 🙈 Карточка скрыта по команде сервера
+gameclient.js:945 🔒 Server requested close active window
+gameclient.js:893 🔒 closeUnifiedWindow called
+deckanimation.js:205 🔒 forceHideCard called
+playeranimation.js:131 🔓 Decks unlocked: move complete
+gameclient.js:1518 📤 Отправка хода: 5 шагов
+gameclient.js:961 🚶 game переместился на cell-17
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:528 🔔 Ваш ход! Кнопка броска активирована.
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+deckanimation.js:18 🖱️ Clicked on deck: 1
+gameclient.js:1532 🃏 Запрос карты из колоды 1...
+gameclient.js:708 📥 Event added to queue: {type: 'success', title: 'КОМПЬЮТЕРНЫЙ КЛУБ', message: 'Вы потратили 2₴ в компьютерном клубе.', playerName: 'game', playerId: undefined, …}
+gameclient.js:731 📺 Showing Unified Window: {type: 'success', title: 'КОМПЬЮТЕРНЫЙ КЛУБ', message: 'Вы потратили 2₴ в компьютерном клубе.', playerName: 'game', playerId: undefined, …}
+gameclient.js:1609 🃏 Игрок game вытянул карту: {playerId: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', playerName: 'game', deckId: '1', card: {…}}
+deckanimation.js:50 🎬 Rendering Card Window for game
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:1746 🏁 Завершаем ход...
+deckanimation.js:205 🔒 forceHideCard called
+deckanimation.js:205 🔒 forceHideCard called
+deckanimation.js:205 🔒 forceHideCard called
+gameclient.js:1659 🙈 Карточка скрыта по команде сервера
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:945 🔒 Server requested close active window
+gameclient.js:893 🔒 closeUnifiedWindow called
+deckanimation.js:205 🔒 forceHideCard called
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+gameclient.js:945 🔒 Server requested close active window
+gameclient.js:893 🔒 closeUnifiedWindow called
+deckanimation.js:205 🔒 forceHideCard called
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+board.js:337 ✅ Финансовая модалка открыта
+board.js:495 🔓 Открытие карточки: Загрузка всех данных...
+board.js:510 📊 Данные финансов обновлены: {success: true, manual: {…}, auto: {…}, assets: {…}, turnHistory: Array(3), …}
+board.js:124 ⚡ Автозаполнение текущего хода...
+gameclient.js:510 📡 Обновление состояния игры {status: 'in_progress', startedAt: '2025-12-30T09:22:26.650Z', curator: {…}, players: {…}, currentTurn: 'e3e78563-39cf-4dd4-9f42-e2614826a5b9', …}
+gameclient.js:369 🎮 Статус игры: in_progress
+gameclient.js:1761 🔒 Применение прав доступа: {canSeeAutofill: true, canSeeActual: true}
+gameclient.js:163 RENDER LOOP: Processing player game on cell-17
+gameclient.js:1089 🔘 [updateHostButton] allowControl=true, explicitlyHidden=false
+gameclient.js:1111 ✅ [updateHostButton] Кнопка обновлена
+board.js:130 ✅ Автозаполнение выполнено: {success: true, addedIncome: 0, addedExpenses: 2, incomeCount: 0, expenseCount: 1, …}
+board.js:510 📊 Данные финансов обновлены: {success: true, manual: {…}, auto: {…}, assets: {…}, turnHistory: Array(3), …}
+gameclient.js:1218 👨‍💼 Куратор авторизован
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1440  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1440
+gameclient.js:1452  Function inspectPlayer not found in window
+(anonymous) @ gameclient.js:1452
+
+
+
+
+
+
+
+
